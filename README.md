@@ -1,24 +1,11 @@
-# Oryon-E-commerce
-E-commerce platform focused on bringing innovation and digital solutions to your daily life.
-
-## Git Workflow
-
-Our team follows an **organized branch system** to keep development clean and collaborative:
-
-- The **`main`** branch contains the stable and final version of the project.  
-- The **`develop`** branch is used to integrate all new features before release.  
-- Each member works on their own branch named **`feature/membername-taskname`**, created from `develop`.  
-- Once their part is complete, each member **merges their feature branch into `develop`** to combine everyone’s progress.  
-- Finally, when the project is ready for delivery, **`develop` is merged into `main`** to generate the release version.
-
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
 ## React Compiler
 
@@ -84,4 +71,3 @@ export default defineConfig([
   },
 ])
 ```
-
