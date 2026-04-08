@@ -1,13 +1,14 @@
-import headphones from '../assets/audifonos negros airpods max.png'
-import airpods from '../assets/Airpods.png'
-import ipad from '../assets/ipad.png'
+import { Link } from 'react-router-dom'
+import headphones from '../assets/Audifonos negros airpods max.png'
+import airpods    from '../assets/Airpods.png'
+import ipad       from '../assets/ipad.png'
 import iphoneGrid from '../assets/Iphone Grid.png'
 
 const categories = [
-  { name: 'Headphones', image: headphones },
-  { name: 'AirPods',    image: airpods },
-  { name: 'iPad',       image: ipad },
-  { name: 'iPhone',     image: iphoneGrid },
+  { name: 'Headphones', image: headphones, path: '/product' },
+  { name: 'AirPods',    image: airpods,    path: '/product' },
+  { name: 'iPad',       image: ipad,       path: '/product' },
+  { name: 'iPhone',     image: iphoneGrid, path: '/product' },
 ]
 
 const CategoryGrid = () => {
@@ -23,32 +24,37 @@ const CategoryGrid = () => {
         gap: '20px'
       }}>
         {categories.map((cat) => (
-          <div
+          <Link
             key={cat.name}
-            style={{
-              backgroundColor: '#f0f0f0',
-              borderRadius: '24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              aspectRatio: '1',
-              cursor: 'pointer',
-              overflow: 'hidden',
-              transition: 'transform 0.2s',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.04)')}
-            onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+            to={cat.path}
+            style={{ textDecoration: 'none' }}
           >
-            <img
-              src={cat.image}
-              alt={cat.name}
+            <div
               style={{
-                width: '75%',
-                height: '75%',
-                objectFit: 'contain'
+                backgroundColor: '#f0f0f0',
+                borderRadius: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                aspectRatio: '1',
+                cursor: 'pointer',
+                overflow: 'hidden',
+                transition: 'transform 0.2s',
               }}
-            />
-          </div>
+              onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.04)')}
+              onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+            >
+              <img
+                src={cat.image}
+                alt={cat.name}
+                style={{
+                  width: '75%',
+                  height: '75%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
+          </Link>
         ))}
       </div>
     </section>
