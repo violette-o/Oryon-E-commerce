@@ -24,7 +24,6 @@ const Navbar = () => {
     return () => { document.body.style.overflow = '' }
   }, [sidebarOpen])
 
-  // Cerrar dropdown al hacer clic fuera
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -36,17 +35,30 @@ const Navbar = () => {
   }, [])
 
   const sections = [
-    { title: 'Categories', sub: ['Headphones', 'Smartphones', 'Accesories', 'Smartwatches', 'Tablets'] },
-    { title: 'Offers',       sub: [] },
-    { title: 'New Arrivals', sub: [] },
-    { title: 'Wishlist',     sub: [] },
-    { title: 'Cart',         sub: [] },
-    { title: 'My Account',   sub: ['Sign In / Register', 'My Profile'] },
-    { title: 'My Orders',    sub: [] },
-    { title: 'Help / Support', sub: ['Contact', 'FAQ', 'Shipping & Returns'] },
+    { title: 'Categories', titleAction: null, sub: [
+      { label: 'Headphones',   action: null },
+      { label: 'Smartphones',  action: null },
+      { label: 'Accesories',   action: null },
+      { label: 'Smartwatches', action: null },
+      { label: 'Tablets',      action: null },
+    ]},
+    { title: 'Offers',       titleAction: null,                                                   sub: [] },
+    { title: 'New Arrivals', titleAction: null,                                                   sub: [] },
+    { title: 'Wishlist',     titleAction: () => { navigate('/wishlist'); setSidebarOpen(false) }, sub: [] },
+    { title: 'Cart',         titleAction: () => { navigate('/cart'); setSidebarOpen(false) },     sub: [] },
+    { title: 'My Account',   titleAction: null, sub: isLoggedIn ? [
+      { label: 'My Profile',         action: () => { navigate('/profile'); setSidebarOpen(false) } },
+    ] : [
+      { label: 'Sign In / Register', action: () => { navigate('/login'); setSidebarOpen(false) } },
+    ]},
+    { title: 'My Orders',    titleAction: null, sub: [] },
+    { title: 'Help / Support', titleAction: null, sub: [
+      { label: 'Contact',           action: null },
+      { label: 'FAQ',               action: null },
+      { label: 'Shipping & Returns',action: null },
+    ]},
   ]
 
-  // Iniciales del usuario para el avatar
   const initials = user?.name
     ? user.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
     : '?'
@@ -81,13 +93,14 @@ const Navbar = () => {
           {sections.map((section) => (
             <div key={section.title} style={{ marginTop: '20px' }}>
               <span
+                onClick={() => section.titleAction?.()}
                 onMouseEnter={() => setHoveredItem(section.title)}
                 onMouseLeave={() => setHoveredItem(null)}
                 style={{
                   fontSize: '22px', fontWeight: 600,
                   color: hoveredItem === section.title ? '#0abfb8' : '#1a1a1a',
                   textDecoration: 'underline', textUnderlineOffset: '4px',
-                  cursor: 'pointer', display: 'block',
+                  cursor: section.titleAction ? 'pointer' : 'default', display: 'block',
                   marginBottom: section.sub.length > 0 ? '8px' : '0',
                   transition: 'color 0.2s',
                 }}
@@ -95,19 +108,20 @@ const Navbar = () => {
                 {section.title}
               </span>
               {section.sub.map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  onMouseEnter={() => setHoveredItem(item)}
+                <span
+                  key={item.label}
+                  onClick={() => item.action?.()}
+                  onMouseEnter={() => setHoveredItem(item.label)}
                   onMouseLeave={() => setHoveredItem(null)}
                   style={{
                     display: 'block', fontSize: '13.5px', fontWeight: 400,
-                    color: hoveredItem === item ? '#0abfb8' : '#444',
-                    padding: '7px 0', textDecoration: 'none', transition: 'color 0.2s',
+                    color: hoveredItem === item.label ? '#0abfb8' : '#444',
+                    padding: '7px 0', transition: 'color 0.2s',
+                    cursor: item.action ? 'pointer' : 'default',
                   }}
                 >
-                  {item}
-                </a>
+                  {item.label}
+                </span>
               ))}
             </div>
           ))}
@@ -121,7 +135,6 @@ const Navbar = () => {
         backgroundColor: '#fff', fontFamily: 'Poppins, sans-serif',
         position: 'sticky', top: 0, zIndex: 100,
       }}>
-        {/* Izquierda */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
           <Menu size={20} color="#333" style={{ cursor: 'pointer' }} onClick={() => setSidebarOpen(true)} />
           <Link to="/"        style={{ textDecoration: 'none', color: '#333', fontSize: '14px' }}>Home</Link>
@@ -129,12 +142,10 @@ const Navbar = () => {
           <a href="#"         style={{ textDecoration: 'none', color: '#333', fontSize: '14px' }}>Contact</a>
         </div>
 
-        {/* Logo */}
         <Link to="/">
           <img src={logoNegro} alt="Oryon" style={{ height: '36px', objectFit: 'contain', display: 'block' }} />
         </Link>
 
-        {/* Derecha */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{
             display: 'flex', alignItems: 'center', gap: '8px',
@@ -154,13 +165,11 @@ const Navbar = () => {
           <ShoppingCart
             size={22} color="#333"
             style={{ cursor: 'pointer' }}
-            onClick={() => { if (!isLoggedIn) navigate('/login') }}
+            onClick={() => isLoggedIn ? navigate('/cart') : navigate('/login')}
           />
 
-          {/* Avatar / User icon */}
           {isLoggedIn ? (
             <div ref={dropdownRef} style={{ position: 'relative' }}>
-              {/* Avatar con iniciales */}
               <div
                 onClick={() => setShowDropdown(d => !d)}
                 style={{
@@ -174,7 +183,6 @@ const Navbar = () => {
                 {initials}
               </div>
 
-              {/* Dropdown */}
               {showDropdown && (
                 <div style={{
                   position: 'absolute', top: '44px', right: 0,
@@ -187,7 +195,7 @@ const Navbar = () => {
                     <p style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: 0 }}>{user?.name}</p>
                     <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>{user?.email}</p>
                   </div>
-                  <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
+                  <a href="#" onClick={() => { navigate('/profile'); setShowDropdown(false) }} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
                     <User size={14} /> My Profile
                   </a>
                   <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
