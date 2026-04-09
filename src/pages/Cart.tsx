@@ -148,7 +148,7 @@ export default function Cart() {
         display: 'flex', justifyContent: 'center', padding: '20px 48px',
         margin: '0 0 20px',
       }}>
-        <img src={imgPayments} alt="Payment options" style={{ height: '36px', objectFit: 'contain' }} />
+        <img src={imgPayments} alt="Payment options" style={{ width: '100%', maxWidth: '900px', objectFit: 'contain' }} />
       </div>
 
       {/* ── Newsletter ── */}
