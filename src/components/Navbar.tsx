@@ -45,7 +45,7 @@ const Navbar = () => {
     { title: 'Offers',       titleAction: null,                                                   sub: [] },
     { title: 'New Arrivals', titleAction: null,                                                   sub: [] },
     { title: 'Wishlist',     titleAction: () => { navigate('/wishlist'); setSidebarOpen(false) }, sub: [] },
-    { title: 'Cart',         titleAction: () => { navigate('/cart'); setSidebarOpen(false) },     sub: [] },
+    { title: 'Cart', titleAction: () => { navigate('/cart'); window.scrollTo(0, 0); setSidebarOpen(false) }, sub: [] },
     { title: 'My Account',   titleAction: null, sub: isLoggedIn ? [
       { label: 'My Profile',         action: () => { navigate('/profile'); setSidebarOpen(false) } },
     ] : [
@@ -163,10 +163,13 @@ const Navbar = () => {
           </div>
 
           <ShoppingCart
-            size={22} color="#333"
-            style={{ cursor: 'pointer' }}
-            onClick={() => isLoggedIn ? navigate('/cart') : navigate('/login')}
-          />
+          size={22} color="#333"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            if (isLoggedIn) { navigate('/cart'); window.scrollTo(0, 0) }
+              else navigate('/login')
+              }}
+            />
 
           {isLoggedIn ? (
             <div ref={dropdownRef} style={{ position: 'relative' }}>

@@ -1,9 +1,10 @@
 import { useCart } from '../context/CartContext'
 import { useNavigate } from 'react-router-dom'
 import { X } from 'lucide-react'
+import SharedFooter from '../components/SharedFooter'
 import Navbar from '../components/Navbar'
-import logoClaro   from '../assets/Logo Oryon claro.png'
-import imgPayments from '../assets/Payment Options.png'
+import imgPayments  from '../assets/Payment Options.png'
+
 const TAX = 500
 
 function formatPrice(n: number) {
@@ -55,8 +56,7 @@ export default function Cart() {
           {items.length === 0 ? (
             <p style={{ textAlign: 'center', color: '#888', padding: '40px 0' }}>Your cart is empty.</p>
           ) : (
-            // @ts-ignore
-          items.map((item) => (
+            items.map(item => (
               <div key={item.id} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
                 {/* Imagen */}
                 <div style={{
@@ -148,7 +148,7 @@ export default function Cart() {
         display: 'flex', justifyContent: 'center', padding: '20px 48px',
         margin: '0 0 20px',
       }}>
-        <img src={imgPayments} alt="Payment options" style={{ width: '100%', maxWidth: '900px', objectFit: 'contain' }} />
+        <img src={imgPayments} alt="Payment options" style={{ height: '36px', objectFit: 'contain' }} />
       </div>
 
       {/* ── Newsletter ── */}
@@ -178,52 +178,7 @@ export default function Cart() {
       </section>
 
       {/* ── Footer oscuro ── */}
-      <footer style={{ background: '#111', color: '#aaa', padding: '50px 0 24px' }}>
-        <div style={{
-          maxWidth: '1100px', margin: '0 auto 40px', padding: '0 80px',
-          display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1fr', gap: '40px',
-        }}>
-          <div>
-            <img src={logoClaro} alt="Oryon" style={{ height: '32px', objectFit: 'contain', marginBottom: '12px', display: 'block' }} />
-            <p style={{ fontSize: '12px', lineHeight: 1.75, color: '#777', maxWidth: '210px' }}>
-              Oryon is a modern tech store offering innovative devices and accessories designed to improve the way you live, work, and connect.
-            </p>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
-              {['𝕏','f','ig','in'].map(s => (
-                <a key={s} href="#" style={{
-                  width: '32px', height: '32px', borderRadius: '50%', background: '#222',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: '#aaa', textDecoration: 'none', fontSize: '12px',
-                }}>
-                  {s}
-                </a>
-              ))}
-            </div>
-          </div>
-          {[
-            { title: 'COMPANY', links: ['About','Features','Works','Career'] },
-            { title: 'HELP',    links: ['Customer Support','Delivery Details','Terms & Conditions','Privacy Policy'] },
-            { title: 'FAQ',     links: ['Account','Manage Deliveries','Orders','Payments'] },
-          ].map(col => (
-            <div key={col.title}>
-              <h4 style={{ color: '#fff', fontSize: '12.5px', fontWeight: 600, marginBottom: '16px', letterSpacing: '0.6px' }}>
-                {col.title}
-              </h4>
-              <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {col.links.map(l => (
-                  <li key={l}><a href="#" style={{ fontSize: '12px', color: '#777', textDecoration: 'none' }}>{l}</a></li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div style={{
-          maxWidth: '1100px', margin: '0 auto', padding: '18px 80px 0',
-          borderTop: '1px solid #222', textAlign: 'center', fontSize: '11.5px', color: '#444',
-        }}>
-          © 2026 Oryon. All rights reserved. Designed for innovation, technology, and a better shopping experience.
-        </div>
-      </footer>
+      <SharedFooter />
     </div>
   )
 }

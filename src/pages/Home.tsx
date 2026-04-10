@@ -5,10 +5,10 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import SharedFooter from '../components/SharedFooter'
 import './Home.css'
 
 // ── Assets ─────────────────────────────────────────────
-import logoClaro        from '../assets/Logo Oryon claro.png'
 import imgIphoneHero    from '../assets/Iphone Hero.png'
 import imgAirpods       from '../assets/Airpods.png'
 import imgIpad          from '../assets/ipad.png'
@@ -250,52 +250,8 @@ export default function Home() {
       </section>
 
       {/* ══ FOOTER OSCURO ════════════════════════════ */}
-      <footer className="home-footer">
-        <div className="home-footer-grid">
-          <div className="home-footer-brand">
-            <div className="home-footer-logo">
-              <img src={logoClaro} alt="Oryon" />
-            </div>
-            <p>Oryon is a modern tech store offering innovative devices and accessories designed to improve the way you live, work, and connect.</p>
-            <div className="home-footer-socials">
-              <a href="#" className="home-footer-social">𝕏</a>
-              <a href="#" className="home-footer-social">f</a>
-              <a href="#" className="home-footer-social">ig</a>
-              <a href="#" className="home-footer-social">in</a>
-            </div>
-          </div>
-          <div className="home-footer-col">
-            <h4>COMPANY</h4>
-            <ul>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Features</a></li>
-              <li><a href="#">Works</a></li>
-              <li><a href="#">Career</a></li>
-            </ul>
-          </div>
-          <div className="home-footer-col">
-            <h4>HELP</h4>
-            <ul>
-              <li><a href="#">Customer Support</a></li>
-              <li><a href="#">Delivery Details</a></li>
-              <li><a href="#">Terms &amp; Conditions</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-            </ul>
-          </div>
-          <div className="home-footer-col">
-            <h4>FAQ</h4>
-            <ul>
-              <li><a href="#">Account</a></li>
-              <li><a href="#">Manage Deliveries</a></li>
-              <li><a href="#">Orders</a></li>
-              <li><a href="#">Payments</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="home-footer-bottom">
-          © 2025 Oryon. All rights reserved. Designed for innovation, technology, and a better shopping experience.
-        </div>
-      </footer>
+      <SharedFooter />
+
     </div>
   )
 }

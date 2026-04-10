@@ -2,14 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Star, Eye, ShoppingBag, ChevronLeft, ChevronRight, Heart
 } from 'lucide-react'
-import { FaXTwitter, FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa6'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import './ProductDetail.css'
+import SharedFooter from '../components/SharedFooter'
 
-import logoClaro          from '../assets/Logo Oryon claro.png'
 import imgAirpodsMaxBlack from '../assets/airpodsmaxblack.webp'
 import imgAirpodsMaxGreen from '../assets/airpodsmaxgreen.png'
 import imgAirpodsPro3     from '../assets/AirPodsPro3.png'
@@ -322,35 +321,7 @@ export default function ProductDetail() {
         </div>
       </section>
 
-      <footer className="pd-footer">
-        <div className="footer-grid">
-          <div className="footer-brand">
-            <div className="logo"><img src={logoClaro} alt="Oryon" /></div>
-            <p>Oryon is a modern tech store offering innovative devices and accessories designed to improve the way you live, work, and connect.</p>
-            <div className="footer-socials">
-              <a href="#" className="footer-social-icon"><FaXTwitter size={13} /></a>
-              <a href="#" className="footer-social-icon"><FaFacebookF size={13} /></a>
-              <a href="#" className="footer-social-icon"><FaInstagram size={13} /></a>
-              <a href="#" className="footer-social-icon"><FaLinkedinIn size={13} /></a>
-            </div>
-          </div>
-          <div className="footer-col">
-            <h4>COMPANY</h4>
-            <ul><li><a href="#">About</a></li><li><a href="#">Features</a></li><li><a href="#">Works</a></li><li><a href="#">Career</a></li></ul>
-          </div>
-          <div className="footer-col">
-            <h4>HELP</h4>
-            <ul><li><a href="#">Customer Support</a></li><li><a href="#">Delivery Details</a></li><li><a href="#">Terms &amp; Conditions</a></li><li><a href="#">Privacy Policy</a></li></ul>
-          </div>
-          <div className="footer-col">
-            <h4>FAQ</h4>
-            <ul><li><a href="#">Account</a></li><li><a href="#">Manage Deliveries</a></li><li><a href="#">Orders</a></li><li><a href="#">Payments</a></li></ul>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          © 2025 Oryon. All rights reserved. Designed for innovation, technology, and a better shopping experience.
-        </div>
-      </footer>
+      <SharedFooter />
     </div>
   )
 }
