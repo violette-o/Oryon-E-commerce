@@ -1,3 +1,4 @@
+import './Checkout.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { X } from 'lucide-react'
@@ -23,7 +24,7 @@ const STEPS = ['Order', 'Shipping', 'Payment', 'Review']
 function Stepper({ current }: { current: number }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 0 32px' }}>
-      <div style={{ display: 'flex', gap: '80px', marginBottom: '12px' }}>
+      <div className="stepper-labels">
         {STEPS.map((s, i) => (
           <span key={s} style={{
             fontSize: '13.5px', fontWeight: i <= current ? 700 : 400,
@@ -125,12 +126,7 @@ export default function Checkout() {
 
       <Stepper current={2} />
 
-      <div style={{
-        maxWidth: '1000px', margin: '0 auto',
-        padding: '0 48px 80px',
-        display: 'grid', gridTemplateColumns: '1fr 340px',
-        gap: '32px', alignItems: 'start',
-      }}>
+      <div className="checkout-main">
 
         {/* ══ LEFT ══ */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

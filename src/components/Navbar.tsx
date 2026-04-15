@@ -129,107 +129,113 @@ const Navbar = () => {
       </aside>
 
       {/* ── Navbar ─────────────────────────────────── */}
-      <nav style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '16px 48px', borderBottom: '1px solid #e5e5e5',
-        backgroundColor: '#fff', fontFamily: 'Poppins, sans-serif',
-        position: 'sticky', top: 0, zIndex: 100,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
-          <Menu size={20} color="#333" style={{ cursor: 'pointer' }} onClick={() => setSidebarOpen(true)} />
-          <Link to="/"        style={{ textDecoration: 'none', color: '#333', fontSize: '14px' }}>Home</Link>
-          <Link to="/product" style={{ textDecoration: 'none', color: '#333', fontSize: '14px' }}>Shop now</Link>
-          <a href="#"         style={{ textDecoration: 'none', color: '#333', fontSize: '14px' }}>Contact</a>
+<nav style={{
+  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+  padding: '16px 24px', borderBottom: '1px solid #e5e5e5',
+  backgroundColor: '#fff', fontFamily: 'Poppins, sans-serif',
+  position: 'sticky', top: 0, zIndex: 100,
+}}>
+  {/* Izquierda: menú + links */}
+  <div style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
+    <Menu size={20} color="#333" style={{ cursor: 'pointer' }} onClick={() => setSidebarOpen(true)} />
+    {/* Links ocultos en móvil */}
+    <div className="navbar-links">
+      <Link to="/"        style={{ textDecoration: 'none', color: '#333', fontSize: '14px' }}>Home</Link>
+      <Link to="/product" style={{ textDecoration: 'none', color: '#333', fontSize: '14px' }}>Shop now</Link>
+      <a href="#"         style={{ textDecoration: 'none', color: '#333', fontSize: '14px' }}>Contact</a>
+    </div>
+  </div>
+
+  {/* Centro: logo */}
+  <Link to="/">
+    <img src={logoNegro} alt="Oryon" style={{ height: '36px', objectFit: 'contain', display: 'block' }} />
+  </Link>
+
+  {/* Derecha: buscador + iconos */}
+  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+    {/* Buscador oculto en móvil */}
+    <div className="navbar-search" style={{
+      display: 'flex', alignItems: 'center', gap: '8px',
+      padding: '6px 14px', borderRadius: '20px', border: '1px solid #ccc',
+    }}>
+      <Search size={14} color="#999" />
+      <input
+        type="text" placeholder="Search"
+        style={{
+          border: 'none', outline: 'none', fontSize: '13px',
+          fontFamily: 'Poppins, sans-serif', width: '120px',
+          backgroundColor: 'transparent', color: '#333',
+        }}
+      />
+    </div>
+
+    <ShoppingCart
+      size={22} color="#333"
+      style={{ cursor: 'pointer' }}
+      onClick={() => {
+        if (isLoggedIn) { navigate('/cart'); window.scrollTo(0, 0) }
+        else navigate('/login')
+      }}
+    />
+
+    {isLoggedIn ? (
+      <div ref={dropdownRef} style={{ position: 'relative' }}>
+        <div
+          onClick={() => setShowDropdown(d => !d)}
+          style={{
+            width: '36px', height: '36px', borderRadius: '50%',
+            background: '#0abfb8', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', cursor: 'pointer',
+            color: '#fff', fontSize: '13px', fontWeight: 700,
+            userSelect: 'none',
+          }}
+        >
+          {initials}
         </div>
 
-        <Link to="/">
-          <img src={logoNegro} alt="Oryon" style={{ height: '36px', objectFit: 'contain', display: 'block' }} />
-        </Link>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        {showDropdown && (
           <div style={{
-            display: 'flex', alignItems: 'center', gap: '8px',
-            padding: '6px 14px', borderRadius: '20px', border: '1px solid #ccc',
+            position: 'absolute', top: '44px', right: 0,
+            background: '#fff', borderRadius: '12px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+            border: '1px solid #e0e0e0',
+            minWidth: '180px', padding: '8px 0', zIndex: 200,
           }}>
-            <Search size={14} color="#999" />
-            <input
-              type="text" placeholder="Search"
-              style={{
-                border: 'none', outline: 'none', fontSize: '13px',
-                fontFamily: 'Poppins, sans-serif', width: '120px',
-                backgroundColor: 'transparent', color: '#333',
-              }}
-            />
-          </div>
-
-          <ShoppingCart
-          size={22} color="#333"
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            if (isLoggedIn) { navigate('/cart'); window.scrollTo(0, 0) }
-              else navigate('/login')
-              }}
-            />
-
-          {isLoggedIn ? (
-            <div ref={dropdownRef} style={{ position: 'relative' }}>
-              <div
-                onClick={() => setShowDropdown(d => !d)}
-                style={{
-                  width: '36px', height: '36px', borderRadius: '50%',
-                  background: '#0abfb8', display: 'flex', alignItems: 'center',
-                  justifyContent: 'center', cursor: 'pointer',
-                  color: '#fff', fontSize: '13px', fontWeight: 700,
-                  userSelect: 'none',
-                }}
-              >
-                {initials}
-              </div>
-
-              {showDropdown && (
-                <div style={{
-                  position: 'absolute', top: '44px', right: 0,
-                  background: '#fff', borderRadius: '12px',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-                  border: '1px solid #e0e0e0',
-                  minWidth: '180px', padding: '8px 0', zIndex: 200,
-                }}>
-                  <div style={{ padding: '10px 16px', borderBottom: '1px solid #f0f0f0' }}>
-                    <p style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: 0 }}>{user?.name}</p>
-                    <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>{user?.email}</p>
-                  </div>
-                  <a href="#" onClick={() => { navigate('/profile'); setShowDropdown(false) }} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
-                    <User size={14} /> My Profile
-                  </a>
-                  <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
-                    <ShoppingCart size={14} /> My Orders
-                  </a>
-                  <button
-                    onClick={() => { logout(); setShowDropdown(false) }}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: '10px',
-                      padding: '10px 16px', fontSize: '13px', color: '#ff4444',
-                      background: 'none', border: 'none', cursor: 'pointer',
-                      width: '100%', fontFamily: 'Poppins, sans-serif',
-                      borderTop: '1px solid #f0f0f0',
-                    }}
-                  >
-                    <LogOut size={14} /> Sign out
-                  </button>
-                </div>
-              )}
+            <div style={{ padding: '10px 16px', borderBottom: '1px solid #f0f0f0' }}>
+              <p style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: 0 }}>{user?.name}</p>
+              <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>{user?.email}</p>
             </div>
-          ) : (
-            <User
-              size={22} color="#333"
-              style={{ cursor: 'pointer' }}
-              onClick={() => navigate('/login')}
-            />
-          )}
-        </div>
-      </nav>
-    </>
+            <a href="#" onClick={() => { navigate('/profile'); setShowDropdown(false) }} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
+              <User size={14} /> My Profile
+            </a>
+            <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
+              <ShoppingCart size={14} /> My Orders
+            </a>
+            <button
+              onClick={() => { logout(); setShowDropdown(false) }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '10px',
+                padding: '10px 16px', fontSize: '13px', color: '#ff4444',
+                background: 'none', border: 'none', cursor: 'pointer',
+                width: '100%', fontFamily: 'Poppins, sans-serif',
+                borderTop: '1px solid #f0f0f0',
+              }}
+            >
+              <LogOut size={14} /> Sign out
+            </button>
+          </div>
+        )}
+      </div>
+    ) : (
+      <User
+        size={22} color="#333"
+        style={{ cursor: 'pointer' }}
+        onClick={() => navigate('/login')}
+      />
+    )}
+  </div>
+</nav>
+</>
   )
 }
-
 export default Navbar

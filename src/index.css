@@ -48,3 +48,23 @@ button {
   background: none;
   font-family: inherit;
 }
+
+.navbar-links {
+  display: flex;
+  gap: 28px;
+}
+
+.navbar-search {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+  .navbar-search {
+    display: none;
+  }
+}
+
+@import "tailwindcss";

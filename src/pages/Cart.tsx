@@ -1,3 +1,4 @@
+import './Cart.css'
 import { useCart } from '../context/CartContext'
 import { useNavigate } from 'react-router-dom'
 import { X } from 'lucide-react'
@@ -41,12 +42,7 @@ export default function Cart() {
       </div>
 
       {/* ── Main content ── */}
-      <div style={{
-        maxWidth: '900px', margin: '20px auto 0',
-        padding: '0 48px 60px',
-        display: 'grid', gridTemplateColumns: '1fr 280px', gap: '24px',
-        alignItems: 'start',
-      }}>
+       <div className="cart-main">
 
         {/* ── Lista de items ── */}
         <div style={{
@@ -161,13 +157,13 @@ export default function Cart() {
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
           <input
-            type="email" placeholder="Email"
-            style={{
-              border: '1.5px solid #ccc', borderRadius: '30px', padding: '13px 24px',
-              fontSize: '13px', width: '420px', outline: 'none',
-              fontFamily: 'Poppins, sans-serif',
-            }}
-          />
+  type="email" placeholder="Email"
+  className="cart-newsletter-input"
+  style={{
+    border: '1.5px solid #ccc', borderRadius: '30px', padding: '13px 24px',
+    fontSize: '13px', outline: 'none', fontFamily: 'Poppins, sans-serif',
+  }}
+/>
           <button style={{
             background: '#0abfb8', color: '#fff', border: 'none',
             borderRadius: '20px', padding: '11px 40px',

@@ -467,10 +467,9 @@
   font-size: 11.5px;
   color: #444;
 }
+ 
 
-/* ═══════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════ */
+
 @media (max-width: 900px) {
   .home-hero {
     flex-direction: column;
@@ -493,7 +492,6 @@
     height: 300px;
     width: 100%;
     justify-content: center;
-    margin-top: 0;
     overflow: hidden;
   }
   .home-hero-img img {
@@ -502,47 +500,73 @@
     object-fit: cover;
     object-position: top center;
   }
-}
 
-  .home-categories    { padding: 24px; gap: 12px; }
-  .home-section       { padding: 40px 24px; }
-  .home-promo-banner  { margin: 0 24px 20px; padding: 24px; flex-direction: column; text-align: center; }
-  .home-promo-text    { text-align: center; }
-  .home-featured-grid { grid-template-columns: 1fr 1fr; }
-  .home-new-arrivals  { padding: 40px 24px; }
-  .home-footer-grid   { grid-template-columns: 1fr 1fr; padding: 0 24px; }
-  .home-footer-bottom { padding: 18px 24px 0; }
 
-@media (max-width: 600px) {
-  .home-categories    { grid-template-columns: repeat(2, 1fr); }
-  .home-featured-grid { grid-template-columns: 1fr; }
-  .home-footer-grid   { grid-template-columns: 1fr; }
-  .home-hero-text h1  { font-size: 24px; }
-}
+  .home-categories { padding: 24px; gap: 12px; }
 
-@media (max-width: 900px) {
+  
+  .home-section { padding: 40px 24px; }
+
+
+  @media (max-width: 900px) {
   .home-promo-banner {
     margin: 40px 24px 20px;
-    padding: 24px 24px 24px 24px;
-    min-height: 160px;
+    padding: 32px 24px;
+    min-height: auto;
     overflow: hidden;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 16px;
   }
   .home-promo-img {
     position: relative;
     left: auto;
     bottom: auto;
-    height: 160px;
-    margin-bottom: 12px;
+    height: 200px;
+    width: 80%;
+    object-fit: contain;
+    margin: 0 auto;
   }
   .home-promo-text {
     text-align: center;
-    margin: 0;
+    margin: 0 !important;
+    margin-left: 0 !important;
   }
   .home-promo-text h2 {
-    font-size: 20px;
+    font-size: 22px;
     white-space: normal;
   }
+}
+
+  
+  .home-featured-grid { grid-template-columns: 1fr 1fr !important; }
+
+  .home-new-arrivals { padding: 40px 24px; }
+
+  .home-footer-grid   { grid-template-columns: 1fr 1fr; padding: 0 24px; }
+  .home-footer-bottom { padding: 18px 24px 0; }
+}
+
+@media (max-width: 600px) {
+
+  .home-hero-text h1 { font-size: 24px; }
+
+  .home-categories { grid-template-columns: repeat(2, 1fr); }
+
+  .home-carousel-track .home-product-card {
+    flex: 0 0 80%;
+  }
+  .home-arrival-card {
+    flex: 0 0 75%;
+  }
+
+  .home-featured-grid { grid-template-columns: 1fr !important; }
+
+  
+  .home-newsletter-form input { width: 100%; }
+  .home-newsletter-form { flex-direction: column; align-items: center; }
+
+ 
+  .home-footer-grid { grid-template-columns: 1fr; }
 }
