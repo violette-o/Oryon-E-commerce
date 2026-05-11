@@ -569,4 +569,27 @@
 
  
   .home-footer-grid { grid-template-columns: 1fr; }
+
+  .home-toast {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 999;
+  background: var(--teal);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.home-category-card {
+  cursor: default;
+}
+
+.home-promo-banner {
+  margin-top: 80px;
+}
+
 }

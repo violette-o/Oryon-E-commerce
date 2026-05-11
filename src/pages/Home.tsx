@@ -149,15 +149,10 @@ export default function Home() {
       <Navbar />
 
       {added && (
-        <div style={{
-          position: 'fixed', top: '80px', right: '24px', zIndex: 999,
-          background: '#0abfb8', color: '#fff', padding: '12px 24px',
-          borderRadius: '12px', fontSize: '13px', fontWeight: 600,
-          boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
-        }}>
-          ✓ {added} added to cart!
-        </div>
-      )}
+  <div className="home-toast">
+    ✓ {added} added to cart!
+  </div>
+)}
 
       {/* ══ HERO ═════════════════════════════════════ */}
       <section className="home-hero">
@@ -174,7 +169,7 @@ export default function Home() {
       {/* ══ CATEGORY GRID ════════════════════════════ */}
       <section className="home-categories">
         {categories.map((cat) => (
-          <div key={cat.name} className="home-category-card" style={{ cursor: 'default' }}>
+          <div key={cat.name} className="home-category-card">
             <img src={cat.image} alt={cat.name} />
           </div>
         ))}
@@ -198,7 +193,7 @@ export default function Home() {
       </section>
 
       {/* ══ PROMO BANNER ═════════════════════════════ */}
-      <section className="home-promo-banner" style={{ marginTop: '80px' }}>
+      <section className="home-promo-banner">
         <img src={imgAsusbook} alt="Laptop" className="home-promo-img" />
         <div className="home-promo-text">
           <h2>Exclusive tech deals.</h2>

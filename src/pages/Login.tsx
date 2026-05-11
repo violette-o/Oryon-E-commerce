@@ -1,3 +1,4 @@
+import './Login.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User, Mail, Lock } from 'lucide-react'
@@ -8,7 +9,7 @@ import logoClaro from '../assets/Logo Oryon claro.png'
 function Constellation() {
   return (
     <svg
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+      className="login-constellation"
       viewBox="0 0 1440 820"
       preserveAspectRatio="xMidYMid slice"
       xmlns="http://www.w3.org/2000/svg"
@@ -22,8 +23,6 @@ function Constellation() {
       <line x1="140" y1="500" x2="80"  y2="600" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
       <line x1="120" y1="460" x2="240" y2="480" stroke="rgba(255,255,255,0.20)" strokeWidth="1" />
       <line x1="50"  y1="280" x2="130" y2="260" stroke="rgba(255,255,255,0.20)" strokeWidth="1" />
-
-      {/* Puntos izquierda */}
       {[
         [80,120],[200,80],[340,160],[260,300],[80,380],[140,500],[80,600],[120,460],[240,480],[50,280],[130,260]
       ].map(([cx,cy], i) => (
@@ -38,8 +37,6 @@ function Constellation() {
       <line x1="1200" y1="300" x2="1100" y2="420" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
       <line x1="1100" y1="420" x2="1300" y2="480" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
       <line x1="1300" y1="480" x2="1380" y2="400" stroke="rgba(255,255,255,0.20)" strokeWidth="1" />
-
-      {/* Puntos derecha */}
       {[
         [1100,80],[1260,140],[1380,100],[1360,240],[1200,300],[1100,420],[1300,480],[1380,400]
       ].map(([cx,cy], i) => (
@@ -69,14 +66,8 @@ function IconInput({
 }) {
   const [focused, setFocused] = useState(false)
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', gap: '12px',
-      border: `1.5px solid ${focused ? '#8ecfc9' : 'rgba(255,255,255,0.25)'}`,
-      borderRadius: '30px', padding: '13px 20px',
-      background: 'rgba(255,255,255,0.05)',
-      transition: 'border-color 0.2s',
-    }}>
-      <span style={{ color: 'rgba(255,255,255,0.5)', display: 'flex', flexShrink: 0 }}>{icon}</span>
+    <div className={`login-input-wrapper ${focused ? 'login-input-wrapper--focused' : ''}`}>
+      <span className="login-input-icon">{icon}</span>
       <input
         type={type}
         placeholder={placeholder}
@@ -85,10 +76,7 @@ function IconInput({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         required={required}
-        style={{
-          flex: 1, background: 'transparent', border: 'none', outline: 'none',
-          color: '#fff', fontSize: '14px', fontFamily: 'Poppins, sans-serif',
-        }}
+        className="login-input"
       />
     </div>
   )
@@ -116,9 +104,9 @@ export default function Login() {
     setError('')
 
     if (mode === 'register') {
-      if (!name.trim())              { setError('Please enter your name.');        return }
-      if (password !== confirm)      { setError('Passwords do not match.');        return }
-      if (password.length < 6)       { setError('Password must be at least 6 characters.'); return }
+      if (!name.trim())         { setError('Please enter your name.');                   return }
+      if (password !== confirm) { setError('Passwords do not match.');                   return }
+      if (password.length < 6)  { setError('Password must be at least 6 characters.');  return }
     }
 
     setLoading(true)
@@ -134,71 +122,27 @@ export default function Login() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#3a3a3a',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'Poppins, sans-serif',
-      position: 'relative',
-      overflow: 'hidden',
-      padding: '40px 24px',
-    }}>
-      {/* Constelaciones de fondo */}
+    <div className="login-page">
       <Constellation />
 
       {/* Flecha atrás */}
-      <button
-        onClick={() => navigate('/')}
-        style={{
-          position: 'absolute', top: '28px', left: '32px',
-          background: 'none', border: 'none', cursor: 'pointer',
-          color: '#fff', fontSize: '22px', display: 'flex', alignItems: 'center', gap: '6px',
-          zIndex: 2,
-        }}
-      >
-        ←
-      </button>
+      <button className="login-back-btn" onClick={() => navigate('/')}>←</button>
 
-      {/* Header: "Welcome to" + Logo */}
-      <div style={{ textAlign: 'center', marginBottom: '32px', zIndex: 2, position: 'relative' }}>
-        <p style={{ color: '#fff', fontSize: '16px', fontWeight: 500, marginBottom: '8px' }}>
-          Welcome to
-        </p>
-        <img src={logoClaro} alt="Oryon" style={{ height: '80px', objectFit: 'contain' }} />
+      {/* Header */}
+      <div className="login-header">
+        <p className="login-welcome">Welcome to</p>
+        <img src={logoClaro} alt="Oryon" className="login-logo" />
       </div>
 
       {/* Card */}
-      <div style={{
-        width: '100%',
-        maxWidth: '640px',
-        background: '#4a4a4a',
-        borderRadius: '28px',
-        border: '1.5px solid rgba(142,207,201,0.5)',
-        padding: mode === 'register' ? '40px 60px 36px' : '40px 60px 36px',
-        boxShadow: '0 0 40px rgba(10,191,184,0.1)',
-        zIndex: 2,
-        position: 'relative',
-      }}>
-        {/* Título */}
-        <h2 style={{
-          color: '#fff', fontSize: '22px', fontWeight: 600,
-          textAlign: 'center', marginBottom: '28px',
-        }}>
+      <div className="login-card">
+        <h2 className="login-card-title">
           {mode === 'login' ? 'Welcome back!' : 'Sign up to get started'}
         </h2>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <form onSubmit={handleSubmit} className="login-form">
           {mode === 'register' && (
-            <IconInput
-              icon={<User size={16} />}
-              placeholder="Full Name"
-              value={name}
-              onChange={setName}
-              required
-            />
+            <IconInput icon={<User size={16} />} placeholder="Full Name" value={name} onChange={setName} required />
           )}
 
           <IconInput
@@ -220,85 +164,43 @@ export default function Login() {
           />
 
           {mode === 'register' && (
-            <IconInput
-              icon={<Lock size={16} />}
-              placeholder="Confirm Password"
-              type="password"
-              value={confirm}
-              onChange={setConfirm}
-              required
-            />
+            <IconInput icon={<Lock size={16} />} placeholder="Confirm Password" type="password" value={confirm} onChange={setConfirm} required />
           )}
 
-          {/* Forgot password */}
           {mode === 'login' && (
-            <div style={{ textAlign: 'right', marginTop: '-4px' }}>
-              <span style={{ color: '#fff', fontSize: '12.5px', cursor: 'pointer', textDecoration: 'underline' }}>
-                Forgot password?
-              </span>
+            <div className="login-forgot">
+              <span>Forgot password?</span>
             </div>
           )}
 
-          {/* Terms */}
           {mode === 'register' && (
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px', textAlign: 'center', textDecoration: 'underline', cursor: 'pointer' }}>
+            <p className="login-terms">
               By signing up, I agree to the Terms of service &amp; Privacy Policy
             </p>
           )}
 
-          {error && (
-            <p style={{ color: '#ff8a80', fontSize: '12.5px', textAlign: 'center', margin: 0 }}>{error}</p>
-          )}
+          {error && <p className="login-error">{error}</p>}
 
-          {/* Botón */}
           <button
             type="submit"
             disabled={loading}
-            style={{
-              background: loading ? '#6b9e9a' : 'linear-gradient(135deg, #8ecfc9, #0abfb8)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '30px',
-              padding: '14px',
-              fontSize: '15px',
-              fontWeight: 700,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              fontFamily: 'Poppins, sans-serif',
-              marginTop: '6px',
-              transition: 'opacity 0.2s',
-            }}
-            onMouseEnter={e => { if (!loading) (e.currentTarget as HTMLButtonElement).style.opacity = '0.9' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1' }}
+            className={`login-submit-btn ${loading ? 'login-submit-btn--loading' : ''}`}
           >
             {loading ? 'Loading...' : mode === 'login' ? 'Login' : 'Sign in'}
           </button>
         </form>
 
         {/* Toggle */}
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+        <div className="login-toggle">
           {mode === 'login' ? (
             <>
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', marginBottom: '4px' }}>
-                Don't have an account?
-              </p>
-              <span
-                onClick={() => switchMode('register')}
-                style={{ color: '#fff', fontSize: '13px', cursor: 'pointer', textDecoration: 'underline', fontWeight: 500 }}
-              >
-                Sign Up
-              </span>
+              <p className="login-toggle-text">Don't have an account?</p>
+              <span className="login-toggle-link" onClick={() => switchMode('register')}>Sign Up</span>
             </>
           ) : (
             <>
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', marginBottom: '4px' }}>
-                Already have an account?
-              </p>
-              <span
-                onClick={() => switchMode('login')}
-                style={{ color: '#fff', fontSize: '13px', cursor: 'pointer', textDecoration: 'underline', fontWeight: 500 }}
-              >
-                Login
-              </span>
+              <p className="login-toggle-text">Already have an account?</p>
+              <span className="login-toggle-link" onClick={() => switchMode('login')}>Login</span>
             </>
           )}
         </div>
