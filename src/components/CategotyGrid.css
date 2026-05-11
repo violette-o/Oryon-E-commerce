@@ -1,0 +1,58 @@
+/* ─────────────────────────────────────────────
+   ORYON – CategoryGrid  |  CategoryGrid.css
+───────────────────────────────────────────── */
+
+.category-grid-section {
+  padding: 40px 80px;
+  background-color: #fff;
+  font-family: 'Poppins', sans-serif;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.category-grid-link {
+  text-decoration: none;
+}
+
+.category-grid-card {
+  background-color: #f0f0f0;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.category-grid-card:hover {
+  transform: scale(1.04);
+}
+
+.category-grid-img {
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .category-grid-section {
+    padding: 24px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .category-grid {
+    gap: 12px;
+  }
+}
