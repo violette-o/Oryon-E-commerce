@@ -1,0 +1,121 @@
+/* ─────────────────────────────────────────────
+   ORYON – SharedFooter  |  SharedFooter.css
+───────────────────────────────────────────── */
+
+.shared-footer {
+  background: #111;
+  color: #aaa;
+  padding: 50px 0 24px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ── Grid ── */
+.shared-footer-grid {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 80px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+/* ── Brand ── */
+.shared-footer-logo {
+  height: 32px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.shared-footer-desc {
+  font-size: 12px;
+  line-height: 1.75;
+  color: #777;
+  max-width: 210px;
+}
+
+.shared-footer-socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.shared-footer-social {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.shared-footer-social:hover {
+  background: #0abfb8;
+  color: #fff;
+}
+
+/* ── Columns ── */
+.shared-footer-col-title {
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: 0.6px;
+}
+
+.shared-footer-col-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shared-footer-col-link {
+  font-size: 12px;
+  color: #777;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.shared-footer-col-link:hover {
+  color: #0abfb8;
+}
+
+/* ── Bottom ── */
+.shared-footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 80px 0;
+  border-top: 1px solid #222;
+  text-align: center;
+  font-size: 11.5px;
+  color: #444;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .shared-footer-grid {
+    grid-template-columns: 1fr 1fr;
+    padding: 0 24px;
+    gap: 28px;
+  }
+
+  .shared-footer-bottom {
+    padding: 18px 24px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .shared-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .shared-footer-desc {
+    max-width: 100%;
+  }
+}

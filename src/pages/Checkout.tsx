@@ -1,3 +1,4 @@
+import './Checkout.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { X } from 'lucide-react'
@@ -11,40 +12,30 @@ function formatPrice(n: number) {
 }
 
 const DISCOUNT_RATE = 0.10
-const TEAL      = '#0abfb8'
-const TEAL_DARK = '#089990'
-const DARK      = '#1a1a1a'
-const MID       = '#555'
-const CARD_BG   = '#f4f4f4'
-
-// ── Stepper ────────────────────────────────────────────
 const STEPS = ['Order', 'Shipping', 'Payment', 'Review']
 
+// ── Stepper ────────────────────────────────────────────
 function Stepper({ current }: { current: number }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 0 32px' }}>
-      <div style={{ display: 'flex', gap: '80px', marginBottom: '12px' }}>
+    <div className="stepper">
+      <div className="stepper-labels">
         {STEPS.map((s, i) => (
-          <span key={s} style={{
-            fontSize: '13.5px', fontWeight: i <= current ? 700 : 400,
-            color: i <= current ? DARK : '#bbb',
-            minWidth: '70px', textAlign: 'center',
-          }}>{s}</span>
+          <span
+            key={s}
+            className={`stepper-label ${i <= current ? 'stepper-label--active' : ''}`}
+          >
+            {s}
+          </span>
         ))}
       </div>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="stepper-dots">
         {STEPS.map((s, i) => (
-          <div key={s} style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{
-              width: '20px', height: '20px', borderRadius: '50%',
-              background: i <= current ? TEAL : '#ddd',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: i === current ? `0 0 0 4px rgba(10,191,184,0.2)` : 'none',
-            }}>
-              {i < current && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
+          <div key={s} className="stepper-step">
+            <div className={`stepper-dot ${i <= current ? 'stepper-dot--active' : ''} ${i === current ? 'stepper-dot--current' : ''}`}>
+              {i < current && <span className="stepper-check">✓</span>}
             </div>
             {i < STEPS.length - 1 && (
-              <div style={{ width: '88px', height: '2px', background: i < current ? TEAL : '#ddd' }} />
+              <div className={`stepper-line ${i < current ? 'stepper-line--active' : ''}`} />
             )}
           </div>
         ))}
@@ -60,19 +51,16 @@ function Field({ label, placeholder, value, onChange, half = false, type = 'text
 }) {
   const [focused, setFocused] = useState(false)
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', flex: half ? '0 0 calc(50% - 6px)' : '1 1 100%' }}>
-      <label style={{ fontSize: '11px', fontWeight: 700, color: '#888', letterSpacing: '0.5px' }}>{label}</label>
+    <div className={`checkout-field ${half ? 'checkout-field--half' : ''}`}>
+      <label className="checkout-field-label">{label}</label>
       <input
-        type={type} placeholder={placeholder} value={value}
+        type={type}
+        placeholder={placeholder}
+        value={value}
         onChange={e => onChange(e.target.value)}
-        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-        style={{
-          border: `1.5px solid ${focused ? TEAL : '#e0e0e0'}`,
-          borderRadius: '10px', padding: '11px 14px',
-          fontSize: '13px', fontFamily: 'Poppins, sans-serif',
-          outline: 'none', background: '#fff', color: DARK,
-          transition: 'border-color 0.2s',
-        }}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        className={`checkout-field-input ${focused ? 'checkout-field-input--focused' : ''}`}
       />
     </div>
   )
@@ -108,71 +96,50 @@ export default function Checkout() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff', fontFamily: 'Poppins, sans-serif' }}>
+    <div className="checkout-page">
       <Navbar />
 
       {/* Toast */}
       {done && (
-        <div style={{
-          position: 'fixed', top: '80px', right: '24px', zIndex: 999,
-          background: TEAL, color: '#fff', padding: '14px 28px',
-          borderRadius: '12px', fontSize: '13px', fontWeight: 600,
-          boxShadow: '0 4px 20px rgba(10,191,184,0.35)',
-        }}>
+        <div className="checkout-toast">
           ✓ Order placed successfully!
         </div>
       )}
 
       <Stepper current={2} />
 
-      <div style={{
-        maxWidth: '1000px', margin: '0 auto',
-        padding: '0 48px 80px',
-        display: 'grid', gridTemplateColumns: '1fr 340px',
-        gap: '32px', alignItems: 'start',
-      }}>
+      <div className="checkout-main">
 
         {/* ══ LEFT ══ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="checkout-left">
 
           {/* Items */}
           <div>
-            <h2 style={{ fontSize: '18px', fontWeight: 700, color: TEAL, margin: '0 0 16px' }}>
-              Items <span style={{ fontWeight: 400 }}>({items.length} {items.length === 1 ? 'item' : 'items'})</span>
+            <h2 className="checkout-section-title">
+              Items <span className="checkout-section-count">({items.length} {items.length === 1 ? 'item' : 'items'})</span>
             </h2>
-            <div style={{ background: CARD_BG, borderRadius: '20px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div className="checkout-items-list">
               {items.length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#aaa', padding: '32px 0' }}>Your cart is empty.</p>
+                <p className="checkout-empty">Your cart is empty.</p>
               ) : (
-                // @ts-ignore
                 items.map(item => (
-                  <div key={item.id} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <div style={{
-                      width: '90px', height: '90px', flexShrink: 0,
-                      background: '#e8e8e8', borderRadius: '14px', overflow: 'hidden',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px',
-                    }}>
-                      <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                  <div key={item.id} className="checkout-item">
+                    <div className="checkout-item-img">
+                      <img src={item.img} alt={item.name} />
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                        <p style={{ fontSize: '13.5px', fontWeight: 600, color: DARK, margin: 0 }}>{item.name}</p>
-                        <span onClick={() => removeItem(item.id)} style={{
-                          fontSize: '12px', color: MID, cursor: 'pointer',
-                          display: 'flex', alignItems: 'center', gap: '3px', marginLeft: '12px', flexShrink: 0,
-                        }}>
+                    <div className="checkout-item-info">
+                      <div className="checkout-item-header">
+                        <p className="checkout-item-name">{item.name}</p>
+                        <span className="checkout-item-remove" onClick={() => removeItem(item.id)}>
                           <X size={13} color="#e55" /> Remove
                         </span>
                       </div>
-                      <p style={{ fontSize: '13px', color: MID, margin: '4px 0 10px' }}>{formatPrice(item.price)}</p>
-                      <p style={{ fontSize: '11.5px', color: '#aaa', margin: '0 0 6px' }}>Quantity</p>
-                      <div style={{
-                        display: 'inline-flex', alignItems: 'center',
-                        border: '1.5px solid #ddd', borderRadius: '8px', overflow: 'hidden', background: '#fff',
-                      }}>
-                        <button onClick={() => changeQty(item.id, -1)} style={{ width: '30px', height: '30px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '17px', color: '#333' }}>−</button>
-                        <span style={{ width: '32px', textAlign: 'center', fontSize: '13px', fontWeight: 600 }}>{item.qty}</span>
-                        <button onClick={() => changeQty(item.id, 1)} style={{ width: '30px', height: '30px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '17px', color: '#333' }}>+</button>
+                      <p className="checkout-item-price">{formatPrice(item.price)}</p>
+                      <p className="checkout-item-qty-label">Quantity</p>
+                      <div className="checkout-qty-control">
+                        <button onClick={() => changeQty(item.id, -1)}>−</button>
+                        <span>{item.qty}</span>
+                        <button onClick={() => changeQty(item.id, 1)}>+</button>
                       </div>
                     </div>
                   </div>
@@ -182,76 +149,67 @@ export default function Checkout() {
           </div>
 
           {/* Order summary */}
-          <div style={{ background: CARD_BG, borderRadius: '20px', padding: '24px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: 700, color: DARK, margin: '0 0 16px' }}>Order summary</h3>
+          <div className="checkout-summary">
+            <h3 className="checkout-summary-title">Order summary</h3>
             {[
-              { label: 'Subtotal', value: formatPrice(subtotal), red: false },
-              { label: 'Discount (10%)', value: `−${formatPrice(discount)}`, red: true },
-              { label: 'Shipping', value: 'Free', red: false },
+              { label: 'Subtotal',       value: formatPrice(subtotal),          red: false },
+              { label: 'Discount (10%)', value: `−${formatPrice(discount)}`,    red: true  },
+              { label: 'Shipping',       value: 'Free',                         red: false },
             ].map((row, i) => (
               <div key={row.label}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: row.red ? '#e63946' : '#333', fontWeight: 500, padding: '10px 0' }}>
-                  <span>{row.label}</span><span>{row.value}</span>
+                <div className={`checkout-summary-row ${row.red ? 'checkout-summary-row--red' : ''}`}>
+                  <span>{row.label}</span>
+                  <span>{row.value}</span>
                 </div>
-                {i < 2 && <div style={{ height: '1px', background: '#e0e0e0' }} />}
+                {i < 2 && <div className="checkout-summary-divider" />}
               </div>
             ))}
           </div>
         </div>
 
         {/* ══ RIGHT ══ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 700, color: TEAL, margin: 0 }}>Checkout</h2>
+        <div className="checkout-right">
+          <h2 className="checkout-section-title checkout-section-title--right">Checkout</h2>
 
-          <div style={{ background: CARD_BG, borderRadius: '20px', padding: '22px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="checkout-card">
             {/* Payment icons */}
-            <div style={{ paddingBottom: '14px', borderBottom: '1px solid #e0e0e0' }}>
-              <img src={imgPayments} alt="Payment options" style={{ width: '100%', height: '28px', objectFit: 'contain' }} />
+            <div className="checkout-payment-icons">
+              <img src={imgPayments} alt="Payment options" />
             </div>
 
             {/* Form */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="checkout-form">
               <Field label="CARD NUMBER" placeholder="0000 0000 0000 0000" value={cardNumber} onChange={handleCardNumber} />
               <Field label="CARDHOLDER NAME" placeholder="Name on card" value={cardName} onChange={setCardName} />
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <div className="checkout-form-row">
                 <Field label="EXPIRY DATE" placeholder="MM/YY" value={expiry} onChange={handleExpiry} half />
                 <Field label="CVV" placeholder="···" value={cvv} onChange={v => setCvv(v.replace(/\D/g, '').slice(0, 4))} half type="password" />
               </div>
             </div>
 
             {/* Total + button */}
-            <div style={{ borderTop: '1px solid #e0e0e0', paddingTop: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '15px', fontWeight: 700, color: DARK, marginBottom: '16px' }}>
-                <span>Total</span><span style={{ color: TEAL }}>{formatPrice(total)}</span>
+            <div className="checkout-total-section">
+              <div className="checkout-total-row">
+                <span>Total</span>
+                <span className="checkout-total-value">{formatPrice(total)}</span>
               </div>
               <button
                 onClick={handlePlaceOrder}
                 disabled={placing || done}
-                style={{
-                  width: '100%', background: done ? '#4caf7d' : TEAL,
-                  color: '#fff', border: 'none', borderRadius: '20px',
-                  padding: '13px', fontSize: '13px', fontWeight: 600,
-                  cursor: placing || done ? 'default' : 'pointer',
-                  fontFamily: 'Poppins, sans-serif', transition: 'background 0.2s',
-                }}
-                onMouseEnter={e => { if (!placing && !done) e.currentTarget.style.background = TEAL_DARK }}
-                onMouseLeave={e => { if (!placing && !done) e.currentTarget.style.background = done ? '#4caf7d' : TEAL }}
+                className={`checkout-place-btn ${done ? 'checkout-place-btn--done' : ''}`}
               >
                 {done ? '✓ Order Placed!' : placing ? 'Processing…' : 'Place Order'}
               </button>
-              <p onClick={() => navigate('/cart')} style={{ textAlign: 'center', fontSize: '12px', color: TEAL, cursor: 'pointer', margin: '12px 0 0' }}>
+              <p className="checkout-back" onClick={() => navigate('/cart')}>
                 ← Back to cart
               </p>
             </div>
           </div>
 
-          <p style={{ fontSize: '11px', color: '#bbb', textAlign: 'center', margin: 0 }}>
-            🔒 Your payment info is encrypted and secure.
-          </p>
+          <p className="checkout-secure">🔒 Your payment info is encrypted and secure.</p>
         </div>
       </div>
 
-      {/* Footer */}
       <SharedFooter />
     </div>
   )

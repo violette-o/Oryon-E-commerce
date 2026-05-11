@@ -1,0 +1,227 @@
+/* ─────────────────────────────────────────────
+   ORYON – Login Page  |  Login.css
+───────────────────────────────────────────── */
+ 
+.login-page {
+  min-height: 100vh;
+  background: #3a3a3a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+  padding: 40px 24px;
+}
+ 
+/* ── Constellation ── */
+.login-constellation {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+ 
+/* ── Back button ── */
+.login-back-btn {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+}
+ 
+/* ── Header ── */
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+  z-index: 2;
+  position: relative;
+}
+ 
+.login-welcome {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+ 
+.login-logo {
+  height: 80px;
+  object-fit: contain;
+}
+ 
+/* ── Card ── */
+.login-card {
+  width: 100%;
+  max-width: 640px;
+  background: #4a4a4a;
+  border-radius: 28px;
+  border: 1.5px solid rgba(142, 207, 201, 0.5);
+  padding: 40px 60px 36px;
+  box-shadow: 0 0 40px rgba(10, 191, 184, 0.1);
+  z-index: 2;
+  position: relative;
+}
+ 
+.login-card-title {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 28px;
+}
+ 
+/* ── Form ── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+ 
+/* ── Input wrapper ── */
+.login-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 30px;
+  padding: 13px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: border-color 0.2s;
+}
+ 
+.login-input-wrapper--focused {
+  border-color: #8ecfc9;
+}
+ 
+.login-input-icon {
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-shrink: 0;
+}
+ 
+.login-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+ 
+.login-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+ 
+/* ── Forgot password ── */
+.login-forgot {
+  text-align: right;
+  margin-top: -4px;
+}
+ 
+.login-forgot span {
+  color: #fff;
+  font-size: 12.5px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+ 
+/* ── Terms ── */
+.login-terms {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  text-align: center;
+  text-decoration: underline;
+  cursor: pointer;
+}
+ 
+/* ── Error ── */
+.login-error {
+  color: #ff8a80;
+  font-size: 12.5px;
+  text-align: center;
+  margin: 0;
+}
+ 
+/* ── Submit button ── */
+.login-submit-btn {
+  background: linear-gradient(135deg, #8ecfc9, #0abfb8);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 6px;
+  transition: opacity 0.2s;
+}
+ 
+.login-submit-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+ 
+.login-submit-btn--loading {
+  background: #6b9e9a;
+  cursor: not-allowed;
+}
+ 
+/* ── Toggle ── */
+.login-toggle {
+  text-align: center;
+  margin-top: 20px;
+}
+ 
+.login-toggle-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+ 
+.login-toggle-link {
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+ 
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .login-card {
+    padding: 32px 24px 28px;
+    border-radius: 20px;
+  }
+ 
+  .login-logo {
+    height: 60px;
+  }
+ 
+  .login-card-title {
+    font-size: 18px;
+  }
+ 
+  .login-submit-btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+ 
+  .login-constellation {
+    display: none;
+  }
+}
+ 

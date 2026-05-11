@@ -1,9 +1,10 @@
+import './Cart.css'
 import { useCart } from '../context/CartContext'
 import { useNavigate } from 'react-router-dom'
 import { X } from 'lucide-react'
 import SharedFooter from '../components/SharedFooter'
 import Navbar from '../components/Navbar'
-import imgPayments  from '../assets/Payment Options.png'
+import imgPayments from '../assets/Payment Options.png'
 
 const TAX = 500
 
@@ -13,91 +14,59 @@ function formatPrice(n: number) {
 
 // ══════════════════════════════════════════════════════
 export default function Cart() {
-  const navigate  = useNavigate()
+  const navigate = useNavigate()
   const { items, removeItem, changeQty, total: subtotal } = useCart()
 
   const total = subtotal + TAX
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff', fontFamily: 'Poppins, sans-serif' }}>
+    <div className="cart-page">
       <Navbar />
 
       {/* ── Header ── */}
-      <div style={{ textAlign: 'center', padding: '40px 0 8px' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: 700, color: '#1a1a1a', margin: 0 }}>Shopping Cart</h1>
-        <p style={{ fontSize: '14px', color: '#555', marginTop: '10px' }}>
-          Review your selected products and proceed to checkout.
-        </p>
+      <div className="cart-header">
+        <h1 className="cart-title">Shopping Cart</h1>
+        <p className="cart-subtitle">Review your selected products and proceed to checkout.</p>
       </div>
 
       {/* ── Continue Shopping ── */}
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px 48px 0' }}>
-        <span
-          onClick={() => navigate('/')}
-          style={{ fontSize: '13.5px', color: '#0abfb8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', width: 'fit-content' }}
-        >
+      <div className="cart-continue-wrapper">
+        <span className="cart-continue" onClick={() => navigate('/')}>
           ← Continue Shopping
         </span>
       </div>
 
       {/* ── Main content ── */}
-      <div style={{
-        maxWidth: '900px', margin: '20px auto 0',
-        padding: '0 48px 60px',
-        display: 'grid', gridTemplateColumns: '1fr 280px', gap: '24px',
-        alignItems: 'start',
-      }}>
+      <div className="cart-main">
 
         {/* ── Lista de items ── */}
-        <div style={{
-          background: '#f0f0f0', borderRadius: '16px', padding: '28px 24px',
-          display: 'flex', flexDirection: 'column', gap: '28px',
-        }}>
+        <div className="cart-items-list">
           {items.length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#888', padding: '40px 0' }}>Your cart is empty.</p>
+            <p className="cart-empty">Your cart is empty.</p>
           ) : (
             items.map(item => (
-              <div key={item.id} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+              <div key={item.id} className="cart-item">
                 {/* Imagen */}
-                <div style={{
-                  width: '100px', height: '100px', flexShrink: 0,
-                  background: '#e0e0e0', borderRadius: '12px', overflow: 'hidden',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px',
-                }}>
-                  <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <div className="cart-item-img">
+                  <img src={item.img} alt={item.name} />
                 </div>
 
                 {/* Info */}
-                <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#1a1a1a', margin: '0 0 4px' }}>{item.name}</p>
-                  <p style={{ fontSize: '13px', color: '#555', margin: '0 0 12px' }}>{formatPrice(item.price)}</p>
-                  <p style={{ fontSize: '12px', color: '#555', margin: '0 0 8px' }}>Quantity</p>
+                <div className="cart-item-info">
+                  <p className="cart-item-name">{item.name}</p>
+                  <p className="cart-item-price">{formatPrice(item.price)}</p>
+                  <p className="cart-item-qty-label">Quantity</p>
 
                   {/* Qty control */}
-                  <div style={{
-                    display: 'inline-flex', alignItems: 'center',
-                    border: '1.5px solid #ccc', borderRadius: '8px', overflow: 'hidden',
-                    background: '#fff',
-                  }}>
-                    <button
-                      onClick={() => changeQty(item.id, -1)}
-                      style={{ width: '32px', height: '32px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '18px', color: '#333' }}
-                    >−</button>
-                    <span style={{ width: '36px', textAlign: 'center', fontSize: '13px', fontWeight: 600 }}>{item.qty}</span>
-                    <button
-                      onClick={() => changeQty(item.id, 1)}
-                      style={{ width: '32px', height: '32px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '18px', color: '#333' }}
-                    >+</button>
+                  <div className="cart-qty-control">
+                    <button onClick={() => changeQty(item.id, -1)}>−</button>
+                    <span>{item.qty}</span>
+                    <button onClick={() => changeQty(item.id, 1)}>+</button>
                   </div>
 
                   {/* Remove */}
-                  <div style={{ marginTop: '10px' }}>
-                    <span
-                      onClick={() => removeItem(item.id)}
-                      style={{ fontSize: '12.5px', color: '#555', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', width: 'fit-content' }}
-                    >
-                      <X size={14} color="#e55" /> Remove
-                    </span>
+                  <div className="cart-item-remove" onClick={() => removeItem(item.id)}>
+                    <X size={14} color="#e55" /> Remove
                   </div>
                 </div>
               </div>
@@ -106,74 +75,43 @@ export default function Cart() {
         </div>
 
         {/* ── Resumen ── */}
-        <div style={{
-          background: '#f0f0f0', borderRadius: '16px', padding: '28px 24px',
-          display: 'flex', flexDirection: 'column', gap: '14px',
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13.5px', color: '#333' }}>
+        <div className="cart-summary">
+          <div className="cart-summary-row">
             <span>Subtotal</span>
             <span>{formatPrice(subtotal)}</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13.5px', color: '#333' }}>
+          <div className="cart-summary-row">
             <span>Taxes</span>
             <span>{formatPrice(TAX)}</span>
           </div>
-          <div style={{ height: '1px', background: '#ddd' }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', fontWeight: 700, color: '#1a1a1a' }}>
+          <div className="cart-summary-divider" />
+          <div className="cart-summary-row cart-summary-total">
             <span>Total</span>
             <span>{formatPrice(total)}</span>
           </div>
 
-          <div style={{ flex: 1, minHeight: '40px' }} />
+          <div className="cart-summary-spacer" />
 
-          <button
-            onClick={() => navigate('/checkout')}
-            style={{
-              background: '#0abfb8', color: '#fff', border: 'none',
-              borderRadius: '20px', padding: '12px',
-              fontSize: '13px', fontWeight: 600, cursor: 'pointer',
-              fontFamily: 'Poppins, sans-serif', transition: 'background 0.2s',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#089990')}
-            onMouseLeave={e => (e.currentTarget.style.background = '#0abfb8')}
-          >
+          <button className="cart-checkout-btn" onClick={() => navigate('/checkout')}>
             Proceed to checkout.
           </button>
         </div>
       </div>
 
       {/* ── Medios de pago ── */}
-      <div style={{
-        borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0',
-        display: 'flex', justifyContent: 'center', padding: '20px 48px',
-        margin: '0 0 20px',
-      }}>
-        <img src={imgPayments} alt="Payment options" style={{ width: '100%', objectFit: 'contain' }} />
+      <div className="cart-payments">
+        <img src={imgPayments} alt="Payment options" />
       </div>
 
       {/* ── Newsletter ── */}
-      <section style={{ textAlign: 'center', padding: '48px 48px 60px' }}>
-        <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '8px', color: '#1a1a1a' }}>
-          Subscribe to our Newsletter!
-        </h3>
-        <p style={{ fontSize: '13px', color: '#555', marginBottom: '28px' }}>
+      <section className="cart-newsletter">
+        <h3 className="cart-newsletter-title">Subscribe to our Newsletter!</h3>
+        <p className="cart-newsletter-sub">
           Stay updated with the latest products, exclusive offers, and technology news.
         </p>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-          <input
-            type="email" placeholder="Email"
-            style={{
-              border: '1.5px solid #ccc', borderRadius: '30px', padding: '13px 24px',
-              fontSize: '13px', width: '420px', outline: 'none',
-              fontFamily: 'Poppins, sans-serif',
-            }}
-          />
-          <button style={{
-            background: '#0abfb8', color: '#fff', border: 'none',
-            borderRadius: '20px', padding: '11px 40px',
-            fontSize: '13px', fontWeight: 600, cursor: 'pointer',
-            fontFamily: 'Poppins, sans-serif',
-          }}>Send</button>
+        <div className="cart-newsletter-form">
+          <input type="email" placeholder="Email" className="cart-newsletter-input" />
+          <button className="cart-newsletter-btn">Send</button>
         </div>
       </section>
 
