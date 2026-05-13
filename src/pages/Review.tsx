@@ -8,9 +8,10 @@ export default function Review() {
       <Navbar />
 
       <div className="review-container">
-        <h1>Order Review</h1>
-
         <div className="review-card">
+
+          <h1>Order Review</h1>
+
           <h2>✓ Your order has been placed successfully!</h2>
 
           <p>
@@ -20,6 +21,7 @@ export default function Review() {
           <p>
             Your payment was processed correctly and your order is now being prepared.
           </p>
+
         </div>
       </div>
 
