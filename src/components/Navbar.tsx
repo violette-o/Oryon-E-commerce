@@ -43,7 +43,7 @@ const Navbar = () => {
       { label: 'Tablets',      action: () => { navigate('/categories/tablets');      setSidebarOpen(false) } },
     ]},
     { title: 'Offers', titleAction: () => { navigate('/offers'); setSidebarOpen(false) }, sub: [] },
-    { title: 'New Arrivals', titleAction: null,                                                   sub: [] },
+    { title: 'New Arrivals', titleAction: () => { navigate('/new-arrivals'); setSidebarOpen(false) }, sub: [] },
     { title: 'Wishlist',     titleAction: () => { navigate('/wishlist'); setSidebarOpen(false) }, sub: [] },
     { title: 'Cart', titleAction: () => { navigate('/cart'); window.scrollTo(0, 0); setSidebarOpen(false) }, sub: [] },
     { title: 'My Account',   titleAction: null, sub: isLoggedIn ? [
@@ -51,11 +51,11 @@ const Navbar = () => {
     ] : [
       { label: 'Sign In / Register', action: () => { navigate('/login'); setSidebarOpen(false) } },
     ]},
-    { title: 'My Orders',    titleAction: null, sub: [] },
-    { title: 'Help / Support', titleAction: null, sub: [
-      { label: 'Contact',           action: null },
-      { label: 'FAQ',               action: null },
-      { label: 'Shipping & Returns',action: null },
+    { title: 'My Orders', titleAction: () => { navigate('/orders'); setSidebarOpen(false) }, sub: [] },
+    { title: 'Help / Support', titleAction: () => { navigate('/help'); setSidebarOpen(false) }, sub: [
+      { label: 'Contact',            action: () => { navigate('/help'); setSidebarOpen(false) } },
+      { label: 'FAQ',                action: () => { navigate('/help'); setSidebarOpen(false) } },
+      { label: 'Shipping & Returns', action: () => { navigate('/help'); setSidebarOpen(false) } },
     ]},
   ]
 
@@ -110,14 +110,14 @@ const Navbar = () => {
               {section.sub.map((item) => (
                 <span
                   key={item.label}
-                  onClick={() => item.action?.()}
+                  onClick={() => item.action()}
                   onMouseEnter={() => setHoveredItem(item.label)}
                   onMouseLeave={() => setHoveredItem(null)}
                   style={{
                     display: 'block', fontSize: '13.5px', fontWeight: 400,
                     color: hoveredItem === item.label ? '#0abfb8' : '#444',
                     padding: '7px 0', transition: 'color 0.2s',
-                    cursor: item.action ? 'pointer' : 'default',
+                    cursor: 'pointer',
                   }}
                 >
                   {item.label}
