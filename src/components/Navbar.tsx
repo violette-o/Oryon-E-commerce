@@ -35,14 +35,14 @@ const Navbar = () => {
   }, [])
 
   const sections = [
-    { title: 'Categories', titleAction: null, sub: [
-      { label: 'Headphones',   action: null },
-      { label: 'Smartphones',  action: null },
-      { label: 'Accesories',   action: null },
-      { label: 'Smartwatches', action: null },
-      { label: 'Tablets',      action: null },
+    { title: 'Categories', titleAction: () => { navigate('/categories'); setSidebarOpen(false) }, sub: [
+      { label: 'Headphones',   action: () => { navigate('/categories/headphones');   setSidebarOpen(false) } },
+      { label: 'Smartphones',  action: () => { navigate('/categories/smartphones');  setSidebarOpen(false) } },
+      { label: 'Accesories',   action: () => { navigate('/categories/accessories');  setSidebarOpen(false) } },
+      { label: 'Smartwatches', action: () => { navigate('/categories/smartwatches'); setSidebarOpen(false) } },
+      { label: 'Tablets',      action: () => { navigate('/categories/tablets');      setSidebarOpen(false) } },
     ]},
-    { title: 'Offers',       titleAction: null,                                                   sub: [] },
+    { title: 'Offers', titleAction: () => { navigate('/offers'); setSidebarOpen(false) }, sub: [] },
     { title: 'New Arrivals', titleAction: null,                                                   sub: [] },
     { title: 'Wishlist',     titleAction: () => { navigate('/wishlist'); setSidebarOpen(false) }, sub: [] },
     { title: 'Cart', titleAction: () => { navigate('/cart'); window.scrollTo(0, 0); setSidebarOpen(false) }, sub: [] },
