@@ -92,7 +92,11 @@ export default function Checkout() {
   const handlePlaceOrder = () => {
     if (!cardNumber || !cardName || !expiry || !cvv) return
     setPlacing(true)
-    setTimeout(() => { setPlacing(false); setDone(true) }, 1800)
+    setTimeout(() => {
+  setPlacing(false)
+  setDone(true)
+  navigate('/review')
+}, 1800)
   }
 
   return (

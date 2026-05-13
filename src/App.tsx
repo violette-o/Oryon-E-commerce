@@ -8,6 +8,7 @@ import Profile       from './pages/Profile'
 import Wishlist      from './pages/Wishlist'
 import Cart          from './pages/Cart'
 import Checkout      from './pages/Checkout'
+import Review        from './pages/Review'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/cart"     element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/review" element={<Review />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>
