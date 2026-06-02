@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp, Mail, Phone, MessageCircle } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import SharedFooter from '../components/SharedFooter'
-import './HelpSupport.css'
+import './Helpsupport.css'
 
 // ── FAQ data ───────────────────────────────────────────
 const faqs = [
