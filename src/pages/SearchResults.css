@@ -1,15 +1,15 @@
 /* ─────────────────────────────────────────────
-   ORYON – Offers Page | Offers.css
+   ORYON – Search Results | SearchResults.css
 ───────────────────────────────────────────── */
 
-.offers-page {
+.search-page {
   min-height: 100vh;
   background: #fff;
   font-family: 'Poppins', sans-serif;
 }
 
 /* ── Toast ── */
-.offers-toast {
+.search-toast {
   position: fixed;
   top: 80px;
   right: 24px;
@@ -24,129 +24,150 @@
 }
 
 /* ── Header ── */
-.offers-header {
-  text-align: center;
-  padding: 48px 0 32px;
+.search-header {
+  padding: 40px 80px 24px;
   border-bottom: 1px solid #f0f0f0;
 }
 
-.offers-header h1 {
-  font-size: 28px;
+.search-header h1 {
+  font-size: 24px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 8px;
+  margin: 0 0 6px;
 }
 
-.offers-header p {
-  font-size: 14px;
+.search-header h1 span {
+  color: #0abfb8;
+}
+
+.search-header p {
+  font-size: 13.5px;
   color: #888;
   margin: 0;
 }
 
 /* ── Section ── */
-.offers-section {
+.search-section {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 48px 80px 80px;
+  padding: 40px 80px 80px;
+}
+
+/* ── Messages ── */
+.search-msg {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  padding: 60px 0;
+}
+
+/* ── Empty ── */
+.search-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 0;
+  color: #888;
+  font-size: 14px;
+}
+
+.search-empty button {
+  background: none;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 9px 24px;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  color: #555;
+  transition: border-color 0.2s;
+}
+
+.search-empty button:hover {
+  border-color: #0abfb8;
+  color: #0abfb8;
 }
 
 /* ── Grid ── */
-.offers-grid {
+.search-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 
 /* ── Card ── */
-.offer-card {
-  background: #fff;
+.search-card {
   border: 1px solid #e0e0e0;
   border-radius: 16px;
   overflow: hidden;
-  position: relative;
   transition: box-shadow 0.22s, transform 0.22s;
 }
 
-.offer-card:hover {
+.search-card:hover {
   box-shadow: 0 8px 28px rgba(0,0,0,0.10);
   transform: translateY(-2px);
 }
 
-/* ── Badge ── */
-.offer-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #e63946;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  z-index: 1;
-  letter-spacing: 0.3px;
-}
-
 /* ── Image ── */
-.offer-card-img {
+.search-card-img {
   background: #f5f5f5;
-  height: 200px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   overflow: hidden;
 }
 
-.offer-card-img img {
+.search-card-img img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
 
-.offer-card:hover .offer-card-img img {
+.search-card:hover .search-card-img img {
   transform: scale(1.05);
 }
 
+.search-card-noimg {
+  font-size: 12px;
+  color: #bbb;
+}
+
 /* ── Body ── */
-.offer-card-body {
+.search-card-body {
   padding: 14px 16px 16px;
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  text-align: center;
 }
 
-.offer-name {
+.search-card-name {
   font-size: 13px;
   font-weight: 600;
   color: #1a1a1a;
   margin: 0;
 }
 
-.offer-prices {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.offer-price-old {
-  font-size: 12px;
+.search-card-cat {
+  font-size: 11.5px;
   color: #aaa;
-  text-decoration: line-through;
+  margin: 0;
 }
 
-.offer-price-new {
-  font-size: 14px;
-  font-weight: 700;
+.search-card-price {
+  font-size: 13px;
   color: #0abfb8;
+  font-weight: 600;
+  margin: 0 0 8px;
 }
 
 /* ── Cart button ── */
-.offer-btn-cart {
+.search-card-btn {
   background: #0abfb8;
   color: #fff;
   border: none;
@@ -158,45 +179,23 @@
   justify-content: center;
   cursor: pointer;
   transition: background 0.2s;
-  margin-top: 4px;
 }
 
-.offer-btn-cart:hover {
+.search-card-btn:hover {
   background: #089990;
 }
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
-  .offers-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  .search-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 900px) {
-  .offers-section {
-    padding: 32px 24px 60px;
-  }
-
-  .offers-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
+  .search-header { padding: 32px 24px 20px; }
+  .search-section { padding: 32px 24px 60px; }
+  .search-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
 }
 
 @media (max-width: 500px) {
-  .offers-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .offers-header h1 {
-    font-size: 22px;
-  }
-}
-
-/* ── Message ── */
-.offers-msg {
-  text-align: center;
-  color: #aaa;
-  font-size: 14px;
-  padding: 60px 0;
+  .search-grid { grid-template-columns: 1fr; }
 }

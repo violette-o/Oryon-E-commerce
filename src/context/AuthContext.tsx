@@ -1,64 +1,77 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile,
+  sendPasswordResetEmail,
+} from 'firebase/auth'
+import type { User } from 'firebase/auth'
+import { auth } from '../firebase'
 
-interface User {
-  name: string
-  email: string
-  avatar?: string
-}
-
+// ── Tipos ──────────────────────────────────────────────
 interface AuthContextType {
-  user: User | null
-  isLoggedIn: boolean
-  login: (email: string, password: string) => Promise<boolean>
-  register: (name: string, email: string, password: string) => Promise<boolean>
-  logout: () => void
+  user:        User | null
+  isLoggedIn:  boolean
+  loading:     boolean
+  login:       (email: string, password: string) => Promise<void>
+  register:    (name: string, email: string, password: string) => Promise<void>
+  logout:      () => Promise<void>
+  resetPassword: (email: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
+// ── Provider ───────────────────────────────────────────
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user,    setUser]    = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  // Persistir sesión en localStorage
+  // Escucha cambios de sesión de Firebase
   useEffect(() => {
-    const saved = localStorage.getItem('oryon_user')
-    if (saved) setUser(JSON.parse(saved))
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser)
+      setLoading(false)
+    })
+    return () => unsubscribe()
   }, [])
 
-  const login = async (email: string, _password: string): Promise<boolean> => {
-    // Simulación — reemplazar con API real
-    const saved = localStorage.getItem(`oryon_account_${email}`)
-    if (!saved) return false
-    const account = JSON.parse(saved)
-    const loggedUser = { name: account.name, email: account.email }
-    setUser(loggedUser)
-    localStorage.setItem('oryon_user', JSON.stringify(loggedUser))
-    return true
+  const login = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password)
   }
 
-  const register = async (name: string, email: string, _password: string): Promise<boolean> => {
-    // Guardar cuenta simulada
-    const account = { name, email }
-    localStorage.setItem(`oryon_account_${email}`, JSON.stringify(account))
-    const newUser = { name, email }
-    setUser(newUser)
-    localStorage.setItem('oryon_user', JSON.stringify(newUser))
-    return true
+  const register = async (name: string, email: string, password: string) => {
+    const { user } = await createUserWithEmailAndPassword(auth, email, password)
+    await updateProfile(user, { displayName: name })
+    setUser({ ...user, displayName: name })
   }
 
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem('oryon_user')
+  const logout = async () => {
+    await signOut(auth)
+  }
+
+  const resetPassword = async (email: string) => {
+    await sendPasswordResetEmail(auth, email)
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, register, logout }}>
-      {children}
+    <AuthContext.Provider value={{
+      user,
+      isLoggedIn: !!user,
+      loading,
+      login,
+      register,
+      logout,
+      resetPassword,
+    }}>
+      {!loading && children}
     </AuthContext.Provider>
   )
 }
 
+// ── Hook ───────────────────────────────────────────────
 export function useAuth() {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider')

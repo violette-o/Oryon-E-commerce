@@ -1,87 +1,26 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { ShoppingCart } from 'lucide-react'
+import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import SharedFooter from '../components/SharedFooter'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
-import { useState } from 'react'
+import { useProductsByCategory } from '../hooks/useProducts'
 import './CategoryPage.css'
 
-// ── Assets ─────────────────────────────────────────────
-import imgAirpodsMax    from '../assets/AirpodsMax.png'
-import imgSamsungPods   from '../assets/Samsungpods.png'
-import imgAirpodsPro3   from '../assets/AirPodsPro3.png'
-import imgSonyBlack     from '../assets/SonyBlack.png'
-import imgAirpodsGreen  from '../assets/airpodsmaxgreen.png'
-import imgAirpodsBlack  from '../assets/airpodsmaxblack.webp'
-import imgIphone17      from '../assets/Iphone17ProMax.png'
-import imgIphonePink    from '../assets/Iphonepink.png'
-import imgIphoneHero    from '../assets/Iphone Hero.png'
-import imgPowerBank     from '../assets/Powerbank.png'
-import imgJBL           from '../assets/JBL.png'
-import imgJBLClip       from '../assets/JBLClip.png'
-import imgHomePod       from '../assets/Homepod.png'
-import imgIpadMini      from '../assets/IpadMini.png'
-import imgIpad          from '../assets/ipad.png'
-
-// ── Tipos ──────────────────────────────────────────────
-interface Product {
-  id: number
-  name: string
-  price: string
-  img: string
+// ── Metadata de categorías ─────────────────────────────
+const categoryMeta: Record<string, { title: string; description: string }> = {
+  headphones:  { title: 'Headphones',  description: 'Wireless, noise-cancelling and studio headphones' },
+  smartphones: { title: 'Smartphones', description: 'Latest flagship and mid-range phones'             },
+  accessories: { title: 'Accessories', description: 'Chargers, power banks, speakers and more'         },
+  smartwatches:{ title: 'Smartwatches',description: 'Smart speakers, wearables and home devices'       },
+  tablets:     { title: 'Tablets',     description: 'iPads and Android tablets for work and play'      },
 }
 
-// ── Datos por categoría ────────────────────────────────
-const categoryData: Record<string, { title: string; description: string; products: Product[] }> = {
-  headphones: {
-    title: 'Headphones',
-    description: 'Wireless, noise-cancelling and studio headphones',
-    products: [
-      { id: 1,  name: 'AirPods Max',           price: '$2.700.000 COP', img: imgAirpodsMax   },
-      { id: 2,  name: 'Headphones Samsung',     price: '$2.077.000 COP', img: imgSamsungPods  },
-      { id: 3,  name: 'AirPods Pro 3',          price: '$1.100.000 COP', img: imgAirpodsPro3  },
-      { id: 4,  name: 'Headphones Sony',        price: '$1.300.000 COP', img: imgSonyBlack    },
-      { id: 5,  name: 'AirPods Max Green',      price: '$2.700.000 COP', img: imgAirpodsGreen },
-      { id: 6,  name: 'AirPods Max Black',      price: '$2.700.000 COP', img: imgAirpodsBlack },
-    ],
-  },
-  smartphones: {
-    title: 'Smartphones',
-    description: 'Latest flagship and mid-range phones',
-    products: [
-      { id: 7,  name: 'iPhone 17 Pro Max',      price: '$5.400.000 COP', img: imgIphone17    },
-      { id: 8,  name: 'iPhone 15 Pink',         price: '$4.200.000 COP', img: imgIphonePink  },
-      { id: 9,  name: 'iPhone 15 Pro',          price: '$5.200.000 COP', img: imgIphoneHero  },
-    ],
-  },
-  accessories: {
-    title: 'Accessories',
-    description: 'Chargers, power banks, speakers and more',
-    products: [
-      { id: 10, name: 'Power Bank Pro',         price: '$180.000 COP',   img: imgPowerBank   },
-      { id: 11, name: 'JBL Speaker',            price: '$2.150.000 COP', img: imgJBL         },
-      { id: 12, name: 'JBL Clip',               price: '$350.000 COP',   img: imgJBLClip     },
-    ],
-  },
-  smartwatches: {
-    title: 'Smartwatches',
-    description: 'Smart speakers, wearables and home devices',
-    products: [
-      { id: 13, name: 'HomePod',                price: '$899.000 COP',   img: imgHomePod     },
-    ],
-  },
-  tablets: {
-    title: 'Tablets',
-    description: 'iPads and Android tablets for work and play',
-    products: [
-      { id: 14, name: 'Apple iPad Mini 256gb',  price: '$2.200.000 COP', img: imgIpadMini    },
-      { id: 15, name: 'Apple iPad',             price: '$3.100.000 COP', img: imgIpad        },
-    ],
-  },
+function formatPrice(n: number) {
+  return '$ ' + n.toLocaleString('es-CO') + ' COP'
 }
 
-// ── Componente principal ───────────────────────────────
 export default function CategoryPage() {
   const { category }   = useParams<{ category: string }>()
   const navigate       = useNavigate()
@@ -89,9 +28,15 @@ export default function CategoryPage() {
   const { addItem }    = useCart()
   const [added, setAdded] = useState<string | null>(null)
 
-  const data = category ? categoryData[category] : null
+  // Capitaliza para matchear con Firestore (headphones → Headphones)
+  const firestoreCategory = category
+    ? category.charAt(0).toUpperCase() + category.slice(1)
+    : ''
 
-  if (!data) {
+  const { products, loading, error } = useProductsByCategory(firestoreCategory)
+  const meta = category ? categoryMeta[category] : null
+
+  if (!meta) {
     return (
       <div className="catpage-notfound">
         <Navbar />
@@ -102,13 +47,13 @@ export default function CategoryPage() {
     )
   }
 
-  const handleAddToCart = (item: Product) => {
+  const handleAddToCart = (item: { id?: string; name: string; price: number; images: string[] }) => {
     if (!isLoggedIn) { navigate('/login'); return }
     addItem({
-      id:    item.id,
+      id:    item.name.length + item.price,
       name:  item.name,
-      price: parseInt(item.price.replace(/[^0-9]/g, '')),
-      img:   item.img,
+      price: item.price,
+      img:   item.images?.[0] ?? '',
     })
     setAdded(item.name)
     setTimeout(() => setAdded(null), 2000)
@@ -118,44 +63,49 @@ export default function CategoryPage() {
     <div className="catpage">
       <Navbar />
 
-      {/* Toast */}
-      {added && (
-        <div className="catpage-toast">
-          ✓ {added} added to cart!
-        </div>
-      )}
+      {added && <div className="catpage-toast">✓ {added} added to cart!</div>}
 
       {/* Header */}
       <div className="catpage-header">
         <span className="catpage-back" onClick={() => navigate('/categories')}>
           ← Back to Categories
         </span>
-        <h1>{data.title}</h1>
-        <p>{data.description}</p>
+        <h1>{meta.title}</h1>
+        <p>{meta.description}</p>
       </div>
 
-      {/* Grid de productos */}
+      {/* Grid */}
       <section className="catpage-section">
-        <div className="catpage-grid">
-          {data.products.map(item => (
-            <div key={item.id} className="catpage-card">
-              <div className="catpage-card-img">
-                <img src={item.img} alt={item.name} />
+        {loading && <p className="catpage-msg">Loading products...</p>}
+        {error   && <p className="catpage-msg catpage-msg--error">{error}</p>}
+        {!loading && products.length === 0 && (
+          <p className="catpage-msg">No products found in this category.</p>
+        )}
+        {!loading && products.length > 0 && (
+          <div className="catpage-grid">
+            {products.map(item => (
+              <div key={item.id} className="catpage-card">
+                <div className="catpage-card-img">
+                  {item.images?.[0]
+                    ? <img src={item.images[0]} alt={item.name} />
+                    : <span className="catpage-card-noimg">No image</span>
+                  }
+                </div>
+                <div className="catpage-card-body">
+                  <p className="catpage-card-name">{item.name}</p>
+                  <p className="catpage-card-price">{formatPrice(item.price)}</p>
+                  <button
+                    className="catpage-btn-cart"
+                    onClick={() => handleAddToCart(item)}
+                    aria-label="Add to cart"
+                  >
+                    <ShoppingCart size={16} />
+                  </button>
+                </div>
               </div>
-              <div className="catpage-card-body">
-                <p className="catpage-card-name">{item.name}</p>
-                <p className="catpage-card-price">{item.price}</p>
-                <button
-                  className="catpage-btn-cart"
-                  onClick={() => handleAddToCart(item)}
-                  aria-label="Add to cart"
-                >
-                  <ShoppingCart size={16} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <SharedFooter />

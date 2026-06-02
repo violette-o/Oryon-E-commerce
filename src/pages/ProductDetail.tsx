@@ -8,6 +8,9 @@ import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import './ProductDetail.css'
 import SharedFooter from '../components/SharedFooter'
+import CommentSection from '../components/CommentSection'
+import RatingSection from '../components/RatingSection'
+
 
 import imgAirpodsMaxBlack from '../assets/airpodsmaxblack.webp'
 import imgAirpodsMaxGreen from '../assets/airpodsmaxgreen.png'
@@ -319,6 +322,16 @@ export default function ProductDetail() {
           <input type="email" placeholder="Email" />
           <button className="btn-send">Send</button>
         </div>
+      </section>
+
+      {/* ══ COMENTARIOS ══ */}
+      <section className="pd-comments">
+        <CommentSection productId="samsung-headphones-1" />
+      </section>
+
+      {/* ══ RATINGS ══ */}
+      <section className="pd-ratings">
+        <RatingSection productId="samsung-headphones-1" />
       </section>
 
       <SharedFooter />

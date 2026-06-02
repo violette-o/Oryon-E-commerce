@@ -58,9 +58,9 @@ export default function Profile() {
   const navigate = useNavigate()
   const [tab, setTab] = useState<'info' | 'edit'>('info')
 
-  const initials = user?.name
-    ? user.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
-    : '?'
+    const initials = user?.displayName
+      ? user.displayName.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
+      : '?'
 
   const Avatar = ({ size }: { size: number }) => (
     <div style={{
@@ -192,7 +192,7 @@ export default function Profile() {
                 <Avatar size={160} />
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '18px' }}>
                   {[
-                    { value: user?.name,  placeholder: 'Full Name' },
+                    { value: user?.displayName,  placeholder: 'Full Name' },
                     { value: user?.email, placeholder: 'Full Name' },
                     { value: '',          placeholder: 'Full Name' },
                   ].map((field, i) => (

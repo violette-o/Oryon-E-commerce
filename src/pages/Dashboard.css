@@ -1,0 +1,320 @@
+/* ─────────────────────────────────────────────
+   ORYON – Seller Dashboard | Dashboard.css
+───────────────────────────────────────────── */
+
+.dashboard-page {
+  min-height: 100vh;
+  background: #fff;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ── Toast ── */
+.dashboard-toast {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 999;
+  background: #0abfb8;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* ── Header ── */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 80px 32px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dashboard-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+}
+
+.dashboard-header p {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+}
+
+/* ── Post button ── */
+.dashboard-post-btn {
+  background: #0abfb8;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 11px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.dashboard-post-btn:hover {
+  background: #089990;
+}
+
+/* ── Stats ── */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 32px 80px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0abfb8;
+}
+
+.stat-label {
+  font-size: 12.5px;
+  color: #888;
+  font-weight: 500;
+}
+
+/* ── Section ── */
+.dashboard-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 80px 80px;
+}
+
+.dashboard-section h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 24px;
+}
+
+/* ── Messages ── */
+.dashboard-msg {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  padding: 40px 0;
+}
+
+.dashboard-msg--error {
+  color: #e63946;
+}
+
+/* ── Empty state ── */
+.dashboard-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 0;
+  color: #888;
+  font-size: 14px;
+}
+
+/* ── Products list ── */
+.dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Item ── */
+.dashboard-item {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 16px;
+  transition: box-shadow 0.2s;
+}
+
+.dashboard-item:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+}
+
+.dashboard-item--paused {
+  opacity: 0.6;
+}
+
+/* ── Item image ── */
+.dashboard-item-img {
+  width: 80px;
+  height: 80px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+}
+
+.dashboard-item-placeholder {
+  font-size: 11px;
+  color: #bbb;
+}
+
+/* ── Item info ── */
+.dashboard-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard-item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.dashboard-item-price {
+  font-size: 13.5px;
+  color: #0abfb8;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dashboard-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.dashboard-item-cat {
+  font-size: 11.5px;
+  color: #888;
+  background: #f0f0f0;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.dashboard-item-status {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.status--active {
+  background: #e6f9f4;
+  color: #089990;
+}
+
+.status--paused {
+  background: #f5f5f5;
+  color: #aaa;
+}
+
+.dashboard-item-views {
+  font-size: 12px;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Item actions ── */
+.dashboard-item-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid #e0e0e0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn--edit:hover {
+  border-color: #0abfb8;
+  color: #0abfb8;
+}
+
+.action-btn--toggle:hover {
+  border-color: #f5a623;
+  color: #f5a623;
+}
+
+.action-btn--delete:hover {
+  border-color: #e63946;
+  color: #e63946;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 32px 24px 24px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 24px;
+  }
+
+  .dashboard-section {
+    padding: 32px 24px 60px;
+  }
+}
+
+@media (max-width: 500px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dashboard-item {
+    flex-wrap: wrap;
+  }
+
+  .dashboard-item-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

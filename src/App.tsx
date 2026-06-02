@@ -14,6 +14,10 @@ import Offers        from './pages/Offers'
 import NewArrivals   from './pages/Newarrivals'
 import MyOrders      from './pages/Myorders'
 import HelpSupport   from './pages/Helpsupport'
+import PostProduct   from './pages/PostProduct'
+import Dashboard     from './pages/Dashboard'
+import EditProduct   from './pages/EditProduct'
+import SearchResults from './pages/SearchResults'
 
 function App() {
   return (
@@ -34,6 +38,10 @@ function App() {
             <Route path="/new-arrivals" element={<NewArrivals />} />
             <Route path="/orders"   element={<MyOrders />} />
             <Route path="/help"     element={<HelpSupport />} />
+            <Route path="/post-product" element={<PostProduct />} />
+            <Route path="/dashboard"    element={<Dashboard />} />
+            <Route path="/edit-product/:id" element={<EditProduct />} />
+            <Route path="/search" element={<SearchResults />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>
