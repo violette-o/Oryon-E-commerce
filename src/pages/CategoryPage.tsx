@@ -6,7 +6,7 @@ import SharedFooter from '../components/SharedFooter'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useProductsByCategory } from '../hooks/useProducts'
-import './CategoryPage.css'
+import './Categorypage.css'
 
 // ── Metadata de categorías ─────────────────────────────
 const categoryMeta: Record<string, { title: string; description: string }> = {
