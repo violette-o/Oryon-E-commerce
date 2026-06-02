@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import SharedFooter from '../components/SharedFooter'
-import './MyOrders.css'
+import './Myorders.css'
 
 import imgSamsungPods  from '../assets/Samsungpods.png'
 import imgIpadMini     from '../assets/IpadMini.png'
