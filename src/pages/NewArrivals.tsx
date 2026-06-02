@@ -6,7 +6,7 @@ import SharedFooter from '../components/SharedFooter'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useProducts } from '../hooks/useProducts'
-import './NewArrivals.css'
+import './Newarrivals.css'
 
 function formatPrice(n: number) {
   return '$ ' + n.toLocaleString('es-CO') + ' COP'
