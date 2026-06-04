@@ -125,6 +125,7 @@ export default function Home() {
   const newArrivals = allLocal.slice(0, 6)
 
   const handleAddToCart = (item: Product) => {
+    
     if (!isLoggedIn) { navigate('/login'); return }
     addItem({ id: item.name.length + item.price, name: item.name, price: item.price, img: item.img })
     setAdded(item.name)
