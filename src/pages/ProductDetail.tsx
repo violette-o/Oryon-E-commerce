@@ -1,60 +1,21 @@
 import { useState, useEffect, useRef } from 'react'
-import {
-  Star, Eye, ShoppingBag, ChevronLeft, ChevronRight, Heart
-} from 'lucide-react'
+import { Star, Eye, ShoppingBag, ChevronLeft, ChevronRight, Heart } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getProductById } from '../services/products'
-import type { Product } from '../services/products'
 import Navbar from '../components/Navbar'
-import { useAuth } from '../context/AuthContext'
-import { useCart } from '../context/CartContext'
-import './ProductDetail.css'
 import SharedFooter from '../components/SharedFooter'
 import CommentSection from '../components/CommentSection'
 import RatingSection from '../components/RatingSection'
+import { useAuth } from '../context/AuthContext'
+import { useCart } from '../context/CartContext'
+import { getProductById } from '../services/products'
+import { useProducts } from '../hooks/useProducts'
+import type { Product } from '../services/products'
+import imgPayments from '../assets/Payment Options.png'
+import './ProductDetail.css'
 
-
-import imgAirpodsMaxBlack from '../assets/airpodsmaxblack.webp'
-import imgAirpodsMaxGreen from '../assets/airpodsmaxgreen.png'
-import imgAirpodsPro3     from '../assets/AirPodsPro3.png'
-import imgSamsungPods     from '../assets/Samsungpods.png'
-import imgSamsungBuds3    from '../assets/samsunggalaxybuds3.webp'
-import imgSmokinBuds      from '../assets/smokinbuds.webp'
-import imgIpadMini        from '../assets/IpadMini.png'
-import imgMsiLaptop       from '../assets/msilaptop.webp'
-import imgMsiLaptop2      from '../assets/msilaptop2.png'
-import imgSonyWH          from '../assets/sony-wh-1000xm6.png'
-import imgMbpSilver       from '../assets/mbpsilver.png'
-import imgPayments        from '../assets/Payment Options.png'
-import chica1             from '../assets/chica1.jpg'
-import chica2             from '../assets/chica2.jpg'
-import chica3             from '../assets/chica3.jpeg'
-import chico1             from '../assets/chico1.jpeg'
-
-const imgProductoMain = imgSamsungPods
-
-interface CardData {
-  name: string; price: string; img: string; alt: string; badge?: string
+function formatPrice(n: number) {
+  return '$ ' + n.toLocaleString('es-CO') + ' COP'
 }
-
-const alsoLike: CardData[] = [
-  { name: 'Headphones SAMSUNG',    price: '$300.000 COP',   img: imgAirpodsMaxGreen, alt: 'Headphones SAMSUNG' },
-  { name: 'APPLE AirPods Max',     price: '$2.700.000 COP', img: imgAirpodsMaxBlack, alt: 'APPLE AirPods Max'  },
-  { name: 'SONY WH-1000XM6',       price: '$1.600.000 COP', img: imgSonyWH,          alt: 'SONY WH-1000XM6'   },
-]
-const elevate: CardData[] = [
-  { name: 'APPLE AirPods Pro 3',   price: '$1.170.000 COP', img: imgAirpodsPro3,  alt: 'AirPods Pro 3'         },
-  { name: 'SAMSUNG Galaxy Buds 3', price: '$720.000 COP',   img: imgSamsungBuds3, alt: 'Samsung Galaxy Buds 3' },
-  { name: 'SKULLCANDY Buds®',      price: '$120.000 COP',   img: imgSmokinBuds,   alt: 'Skullcandy Buds'       },
-]
-const alsoViewed: CardData[] = [
-  { name: 'MacBook Pro M2',        price: '$5.200.000 COP', img: imgMbpSilver,  alt: 'MacBook Pro M2',    badge: 'SAVE 12%' },
-  { name: 'Portatil MSI Thin Amd', price: '$3.800.000 COP', img: imgMsiLaptop,  alt: 'MSI Thin'                             },
-  { name: 'APPLE Ipad mini 256gb', price: '$2.200.000 COP', img: imgIpadMini,   alt: 'APPLE iPad mini'                      },
-  { name: 'MSI Cyborg 15 A13VFF',  price: '$5.299.999 COP', img: imgMsiLaptop2, alt: 'MSI Cyborg'                           },
-]
-
-const colorMap: Record<string, string> = { black: 'Black', navy: 'Navy Blue', white: 'White' }
 
 function Stars({ filled, total = 5, size = 14 }: { filled: number; total?: number; size?: number }) {
   return (
@@ -66,7 +27,6 @@ function Stars({ filled, total = 5, size = 14 }: { filled: number; total?: numbe
   )
 }
 
-// ── Toast global ───────────────────────────────────────
 function Toast({ name }: { name: string }) {
   return (
     <div style={{
@@ -81,31 +41,34 @@ function Toast({ name }: { name: string }) {
 }
 
 // ── Tarjeta ────────────────────────────────────────────
-function ProductCard({ card, onAdded }: { card: CardData; onAdded: (name: string) => void }) {
+function ProductCard({ item, onAdded }: { item: Product; onAdded: (name: string) => void }) {
   const { isLoggedIn } = useAuth()
   const { addItem }    = useCart()
   const navigate       = useNavigate()
 
-  const handleCart = () => {
+  const handleCart = (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (!isLoggedIn) { navigate('/login'); return }
     addItem({
-      id:    card.name.length + card.price.length,
-      name:  card.name,
-      price: parseInt(card.price.replace(/[^0-9]/g, '')),
-      img:   card.img,
+      id:    item.name.length + item.price,
+      name:  item.name,
+      price: item.price,
+      img:   item.images?.[0] ?? '',
     })
-    onAdded(card.name)
+    onAdded(item.name)
   }
 
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={() => navigate(`/product/${item.id}`)}>
       <div className="product-card-img">
-        {card.badge && <span className="badge-save-sm">{card.badge}</span>}
-        <img src={card.img} alt={card.alt} />
+        {item.images?.[0]
+          ? <img src={item.images[0]} alt={item.name} />
+          : <div style={{ width: '100%', height: '100%', background: '#f0f0f0' }} />
+        }
       </div>
       <div className="product-card-body">
-        <div className="product-card-name">{card.name}</div>
-        <div className="product-card-price">{card.price}</div>
+        <div className="product-card-name">{item.name}</div>
+        <div className="product-card-price">{formatPrice(item.price)}</div>
         <button className="btn-cart-small" onClick={handleCart} aria-label="Add to cart">
           <ShoppingBag size={16} />
         </button>
@@ -115,7 +78,7 @@ function ProductCard({ card, onAdded }: { card: CardData; onAdded: (name: string
 }
 
 // ── Carrusel ───────────────────────────────────────────
-function Carousel({ items, onAdded }: { items: CardData[]; onAdded: (name: string) => void }) {
+function Carousel({ items, onAdded }: { items: Product[]; onAdded: (name: string) => void }) {
   const [index, setIndex] = useState(0)
   const trackRef = useRef<HTMLDivElement>(null)
   const visible = 3
@@ -136,7 +99,7 @@ function Carousel({ items, onAdded }: { items: CardData[]; onAdded: (name: strin
         </button>
       )}
       <div ref={trackRef} className="carousel-track">
-        {items.map(c => <ProductCard key={c.name} card={c} onAdded={onAdded} />)}
+        {items.map(c => <ProductCard key={c.id} item={c} onAdded={onAdded} />)}
       </div>
       {index < max && (
         <button className="carousel-arrow right" onClick={() => goTo(index + 1)}>
@@ -149,45 +112,44 @@ function Carousel({ items, onAdded }: { items: CardData[]; onAdded: (name: strin
 
 // ══════════════════════════════════════════════════════
 export default function ProductDetail() {
-  const { id } = useParams()
-
-const [product, setProduct] = useState<Product | null>(null)
-const [loadingProduct, setLoadingProduct] = useState(true)
+  const { id }         = useParams<{ id: string }>()
   const { isLoggedIn } = useAuth()
   const { addItem }    = useCart()
   const navigate       = useNavigate()
 
-  const [qty,   setQty]   = useState(1)
-  const [color, setColor] = useState('black')
-  const [time,  setTime]  = useState({ h: 0, m: 5, s: 59, ms: 47 })
-  const [added, setAdded] = useState<string | null>(null)
+  const [product,  setProduct]  = useState<Product | null>(null)
+  const [loading,  setLoading]  = useState(true)
+  const [qty,      setQty]      = useState(1)
+  const [added,    setAdded]    = useState<string | null>(null)
+  const [time,     setTime]     = useState({ h: 0, m: 5, s: 59, ms: 47 })
 
-const totalMsRef = useRef((5 * 60 + 59) * 1000 + 470)
+  const { products } = useProducts()
 
-useEffect(() => {
-  if (!id) return
-
-  getProductById(id)
-    .then(setProduct)
-    .finally(() => setLoadingProduct(false))
-}, [id])
-
-useEffect(() => {
-  const timerId = setInterval(() => {
-    totalMsRef.current = Math.max(0, totalMsRef.current - 50)
-
-    const t = totalMsRef.current
-
-    setTime({
-      h: Math.floor(t / 3600000),
-      m: Math.floor((t % 3600000) / 60000),
-      s: Math.floor((t % 60000) / 1000),
-      ms: Math.floor((t % 1000) / 10),
+  // Cargar producto desde Firestore
+  useEffect(() => {
+    if (!id) return
+    setLoading(true)
+    getProductById(id).then(p => {
+      setProduct(p)
+      setLoading(false)
     })
-  }, 50)
+  }, [id])
 
-  return () => clearInterval(timerId)
-}, [])
+  // Timer countdown
+  const totalMsRef = useRef((5 * 60 + 59) * 1000 + 470)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      totalMsRef.current = Math.max(0, totalMsRef.current - 50)
+      const t = totalMsRef.current
+      setTime({
+        h:  Math.floor(t / 3600000),
+        m:  Math.floor((t % 3600000) / 60000),
+        s:  Math.floor((t % 60000)   / 1000),
+        ms: Math.floor((t % 1000)    / 10),
+      })
+    }, 50)
+    return () => clearInterval(interval)
+  }, [])
 
   const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -195,17 +157,38 @@ useEffect(() => {
     setAdded(name)
     setTimeout(() => setAdded(null), 2000)
   }
-if (loadingProduct) {
-  return <div>Loading product...</div>
-}
 
-if (!product) {
-  return <div>Product not found</div>
-}
   const handleAddToCart = () => {
     if (!isLoggedIn) { navigate('/login'); return }
-    addItem({ id: 1, name: 'Headphones Samsung', price: 2077000, img: imgProductoMain })
-    showToast('Headphones Samsung')
+    if (!product) return
+    addItem({ id: product.name.length + product.price, name: product.name, price: product.price, img: product.images?.[0] ?? '' })
+    showToast(product.name)
+  }
+
+  // Productos relacionados
+  const related = products.filter(p => p.id !== id && p.category === product?.category).slice(0, 4)
+  const others  = products.filter(p => p.id !== id).slice(0, 4)
+
+  if (loading) {
+    return (
+      <div className="pd-page">
+        <Navbar />
+        <p style={{ textAlign: 'center', padding: '80px 0', color: '#aaa', fontFamily: 'Poppins' }}>Loading product...</p>
+        <SharedFooter />
+      </div>
+    )
+  }
+
+  if (!product) {
+    return (
+      <div className="pd-page">
+        <Navbar />
+        <p style={{ textAlign: 'center', padding: '80px 0', color: '#888', fontFamily: 'Poppins' }}>
+          Product not found. <span style={{ color: '#0abfb8', cursor: 'pointer' }} onClick={() => navigate('/')}>← Go back</span>
+        </p>
+        <SharedFooter />
+      </div>
+    )
   }
 
   return (
@@ -216,17 +199,15 @@ if (!product) {
       <section className="product-section">
         <div className="product-info">
           <h1>
-            Headphones Samsung
+            {product.name}
             <button className="wish-btn" aria-label="Add to wishlist"><Heart size={18} /></button>
           </h1>
           <div className="rating-row">
             <span className="stars"><Stars filled={4} /></span>
-            <span className="rating-count">(4)</span>
+            <span className="rating-count">(0)</span>
           </div>
           <div className="price-row">
-            <span className="badge-save">SAVE 33%</span>
-            <span className="price-current">$2.077.000</span>
-            <span className="price-old">$3.100.000</span>
+            <span className="price-current">{formatPrice(product.price)}</span>
           </div>
           <div className="timer-box">
             {[
@@ -245,22 +226,10 @@ if (!product) {
             ))}
           </div>
           <div className="viewers"><Eye size={14} />24 people are viewing this right now</div>
-          <p className="product-desc">
-            Experience powerful sound wherever you go with these incredible Samsung headphones.
-            Designed for comfort and performance, they're the perfect way to enjoy your music,
-            calls, and entertainment in style.
-          </p>
+          <p className="product-desc">{product.description}</p>
           <div className="stock-row">
-            <div className="stock-label"><span>Only 9 item(s) left in stock!</span></div>
+            <div className="stock-label"><span>Condition: {product.condition}</span></div>
             <div className="progress-bar"><div className="progress-fill" /></div>
-          </div>
-          <div className="color-row">
-            <div className="color-label">Color: {colorMap[color]}</div>
-            <div className="color-dots">
-              {['black', 'navy', 'white'].map(c => (
-                <div key={c} className={`color-dot ${c}${color === c ? ' active' : ''}`} onClick={() => setColor(c)} />
-              ))}
-            </div>
           </div>
           <div className="cart-row">
             <div className="qty-label">Quantity</div>
@@ -275,47 +244,10 @@ if (!product) {
           </div>
         </div>
         <div className="product-image-wrap">
-          <img src={imgProductoMain} alt="Samsung Headphones" />
-        </div>
-      </section>
-
-      <div className="divider" />
-      <section className="reviews-section">
-        <h2>Consumer reviews</h2>
-        <div className="reviews-grid">
-          <div className="reviews-summary">
-            <div className="score-big">4.0</div>
-            <div className="score-stars"><Stars filled={4} size={18} /></div>
-            <div className="score-count">(4)</div>
-            {[
-              { name: 'Feature rating', filled: 4 },
-              { name: 'Battery life',   filled: 3 },
-              { name: 'Connectivity',   filled: 3 },
-              { name: 'Sound quality',  filled: 4 },
-              { name: 'Comfort',        filled: 3 },
-            ].map(c => (
-              <div className="criteria-row" key={c.name}>
-                <div className="criteria-name">{c.name}</div>
-                <div className="criteria-stars"><Stars filled={c.filled} size={13} /></div>
-              </div>
-            ))}
-          </div>
-          <div className="reviews-list">
-            {[
-              { text: "The sound quality is amazing and the bass is really powerful. I use them every day for music and calls, and they're super comfortable even after hours.", stars: 5, avatar: chica1 },
-              { text: "I was surprised by how clear the audio is. The design looks sleek and they feel very lightweight. Definitely worth the price.", stars: 4, avatar: chica2 },
-              { text: "They work well for music and calls. The battery lasts a decent amount of time, but I wish the ear cushions were a little softer.", stars: 4, avatar: chica3 },
-              { text: "Overall they're good headphones for the price. The sound is balanced and the build quality feels nice, even if they're not super premium.", stars: 4, avatar: chico1 },
-            ].map((r, i) => (
-              <div className="review-card" key={i}>
-                <div className="reviewer-avatar"><img src={r.avatar} alt="reviewer" /></div>
-                <div>
-                  <p className="review-text">{r.text}</p>
-                  <div className="review-stars"><Stars filled={r.stars} size={12} /></div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {product.images?.[0]
+            ? <img src={product.images[0]} alt={product.name} />
+            : <div style={{ width: '100%', height: '400px', background: '#f5f5f5', borderRadius: '16px' }} />
+          }
         </div>
       </section>
 
@@ -323,21 +255,21 @@ if (!product) {
         <img src={imgPayments} alt="Payment options" style={{ width: '100%', objectFit: 'contain' }} />
       </div>
 
-      <section className="carousel-section">
-        <h2>You may also like</h2>
-        <Carousel items={alsoLike} onAdded={showToast} />
-      </section>
-      <section className="carousel-section" style={{ marginTop: '10px' }}>
-        <h2>Elevate your experience with this options</h2>
-        <Carousel items={elevate} onAdded={showToast} />
-      </section>
+      {related.length > 0 && (
+        <section className="carousel-section">
+          <h2>You may also like</h2>
+          <Carousel items={related} onAdded={showToast} />
+        </section>
+      )}
 
-      <div className="dark-section">
-        <div className="inner">
-          <h2>Customers who viewed products in your search history also viewed</h2>
-          <Carousel items={alsoViewed} onAdded={showToast} />
+      {others.length > 0 && (
+        <div className="dark-section">
+          <div className="inner">
+            <h2>Customers also viewed</h2>
+            <Carousel items={others} onAdded={showToast} />
+          </div>
         </div>
-      </div>
+      )}
 
       <section className="newsletter-section">
         <h3>Subscribe to our Newsletter!</h3>
@@ -348,14 +280,12 @@ if (!product) {
         </div>
       </section>
 
-      {/* ══ COMENTARIOS ══ */}
       <section className="pd-comments">
-        <CommentSection productId="samsung-headphones-1" />
+        <CommentSection productId={id ?? ''} />
       </section>
 
-      {/* ══ RATINGS ══ */}
       <section className="pd-ratings">
-        <RatingSection productId="samsung-headphones-1" />
+        <RatingSection productId={id ?? ''} />
       </section>
 
       <SharedFooter />

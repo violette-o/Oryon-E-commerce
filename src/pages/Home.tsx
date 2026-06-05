@@ -52,6 +52,7 @@ function HomeCarousel({
   hideInfo?: boolean
   onCardClick?: (index: number) => void
 }) {
+  const navigate = useNavigate()
   const [index, setIndex] = useState(0)
   const trackRef = useRef<HTMLDivElement>(null)
   const max = Math.max(0, items.length - visibleCount)
@@ -75,8 +76,8 @@ function HomeCarousel({
           <div
             key={item.id}
             className={hideInfo ? 'home-arrival-card' : 'home-product-card'}
-            onClick={() => onCardClick?.(i)}
-            style={{ cursor: onCardClick ? 'pointer' : 'default' }}
+            onClick={() => item.id ? navigate(`/product/${item.id}`) : onCardClick?.(i)}
+            style={{ cursor: 'pointer' }}
           >
             <div className={hideInfo ? 'home-arrival-card-img' : 'home-product-card-img'}>
               {item.img
@@ -125,7 +126,6 @@ export default function Home() {
   const newArrivals = allLocal.slice(0, 6)
 
   const handleAddToCart = (item: Product) => {
-    
     if (!isLoggedIn) { navigate('/login'); return }
     addItem({ id: item.name.length + item.price, name: item.name, price: item.price, img: item.img })
     setAdded(item.name)
@@ -205,7 +205,7 @@ export default function Home() {
           : (
             <div className="home-featured-grid">
               {featured.map(item => (
-                <div key={item.id} className="home-product-card">
+                <div key={item.id} className="home-product-card" onClick={() => navigate(`/product/${item.id}`)} style={{ cursor: 'pointer' }}>
                   <div className="home-product-card-img">
                     {item.img
                       ? <img src={item.img} alt={item.name} />

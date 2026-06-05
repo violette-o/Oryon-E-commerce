@@ -87,7 +87,7 @@ export default function SearchResults() {
         {!loading && results.length > 0 && (
           <div className="search-grid">
             {results.map(item => (
-              <div key={item.id} className="search-card">
+              <div key={item.id} className="search-card" onClick={() => navigate(`/product/${item.id}`)} style={{ cursor: 'pointer' }}>
                 <div className="search-card-img">
                   {item.images?.[0]
                     ? <img src={item.images[0]} alt={item.name} />

@@ -11,13 +11,13 @@ function formatPrice(n: number) {
 }
 
 const DISCOUNT_RATE = 0.10
+const TAX_RATE      = 0.19
 const TEAL      = '#0abfb8'
 const TEAL_DARK = '#089990'
 const DARK      = '#1a1a1a'
 const MID       = '#555'
 const CARD_BG   = '#f4f4f4'
 
-// ── Stepper ────────────────────────────────────────────
 const STEPS = ['Order', 'Shipping', 'Payment', 'Review']
 
 function Stepper({ current }: { current: number }) {
@@ -53,7 +53,6 @@ function Stepper({ current }: { current: number }) {
   )
 }
 
-// ── Input field ────────────────────────────────────────
 function Field({ label, placeholder, value, onChange, half = false, type = 'text' }: {
   label: string; placeholder: string; value: string
   onChange: (v: string) => void; half?: boolean; type?: string
@@ -78,13 +77,13 @@ function Field({ label, placeholder, value, onChange, half = false, type = 'text
   )
 }
 
-// ══════════════════════════════════════════════════════
 export default function Checkout() {
   const navigate = useNavigate()
   const { items, removeItem, changeQty, total: subtotal } = useCart()
 
   const discount = Math.round(subtotal * DISCOUNT_RATE)
-  const total    = subtotal - discount
+  const tax      = Math.round((subtotal - discount) * TAX_RATE)
+  const total    = subtotal - discount + tax
 
   const [cardNumber, setCardNumber] = useState('')
   const [cardName,   setCardName]   = useState('')
@@ -111,7 +110,6 @@ export default function Checkout() {
     <div style={{ minHeight: '100vh', background: '#fff', fontFamily: 'Poppins, sans-serif' }}>
       <Navbar />
 
-      {/* Toast */}
       {done && (
         <div style={{
           position: 'fixed', top: '80px', right: '24px', zIndex: 999,
@@ -185,15 +183,16 @@ export default function Checkout() {
           <div style={{ background: CARD_BG, borderRadius: '20px', padding: '24px' }}>
             <h3 style={{ fontSize: '16px', fontWeight: 700, color: DARK, margin: '0 0 16px' }}>Order summary</h3>
             {[
-              { label: 'Subtotal', value: formatPrice(subtotal), red: false },
-              { label: 'Discount (10%)', value: `−${formatPrice(discount)}`, red: true },
-              { label: 'Shipping', value: 'Free', red: false },
+              { label: 'Subtotal',        value: formatPrice(subtotal),          red: false },
+              { label: 'Discount (10%)',  value: `−${formatPrice(discount)}`,    red: true  },
+              { label: 'Taxes (19%)',     value: formatPrice(tax),               red: false },
+              { label: 'Shipping',        value: 'Free',                         red: false },
             ].map((row, i) => (
               <div key={row.label}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: row.red ? '#e63946' : '#333', fontWeight: 500, padding: '10px 0' }}>
                   <span>{row.label}</span><span>{row.value}</span>
                 </div>
-                {i < 2 && <div style={{ height: '1px', background: '#e0e0e0' }} />}
+                {i < 3 && <div style={{ height: '1px', background: '#e0e0e0' }} />}
               </div>
             ))}
           </div>
@@ -204,12 +203,10 @@ export default function Checkout() {
           <h2 style={{ fontSize: '18px', fontWeight: 700, color: TEAL, margin: 0 }}>Checkout</h2>
 
           <div style={{ background: CARD_BG, borderRadius: '20px', padding: '22px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {/* Payment icons */}
             <div style={{ paddingBottom: '14px', borderBottom: '1px solid #e0e0e0' }}>
               <img src={imgPayments} alt="Payment options" style={{ width: '100%', height: '28px', objectFit: 'contain' }} />
             </div>
 
-            {/* Form */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <Field label="CARD NUMBER" placeholder="0000 0000 0000 0000" value={cardNumber} onChange={handleCardNumber} />
               <Field label="CARDHOLDER NAME" placeholder="Name on card" value={cardName} onChange={setCardName} />
@@ -219,7 +216,6 @@ export default function Checkout() {
               </div>
             </div>
 
-            {/* Total + button */}
             <div style={{ borderTop: '1px solid #e0e0e0', paddingTop: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '15px', fontWeight: 700, color: DARK, marginBottom: '16px' }}>
                 <span>Total</span><span style={{ color: TEAL }}>{formatPrice(total)}</span>
@@ -251,7 +247,6 @@ export default function Checkout() {
         </div>
       </div>
 
-      {/* Footer */}
       <SharedFooter />
     </div>
   )

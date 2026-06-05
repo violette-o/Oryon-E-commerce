@@ -25,23 +25,23 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/"         element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/login"    element={<Login />} />
-            <Route path="/profile"  element={<Profile />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/cart"     element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/categories"   element={<Categories />} />
+            <Route path="/"                     element={<Home />} />
+            <Route path="/product/:id"          element={<ProductDetail />} />
+            <Route path="/login"                element={<Login />} />
+            <Route path="/profile"              element={<Profile />} />
+            <Route path="/wishlist"             element={<Wishlist />} />
+            <Route path="/cart"                 element={<Cart />} />
+            <Route path="/checkout"             element={<Checkout />} />
+            <Route path="/categories"           element={<Categories />} />
             <Route path="/categories/:category" element={<CategoryPage />} />
-            <Route path="/offers"   element={<Offers />} />
-            <Route path="/new-arrivals" element={<NewArrivals />} />
-            <Route path="/orders"   element={<MyOrders />} />
-            <Route path="/help"     element={<HelpSupport />} />
-            <Route path="/post-product" element={<PostProduct />} />
-            <Route path="/dashboard"    element={<Dashboard />} />
-            <Route path="/edit-product/:id" element={<EditProduct />} />
-            <Route path="/search" element={<SearchResults />} />
+            <Route path="/offers"               element={<Offers />} />
+            <Route path="/new-arrivals"         element={<NewArrivals />} />
+            <Route path="/orders"               element={<MyOrders />} />
+            <Route path="/help"                 element={<HelpSupport />} />
+            <Route path="/post-product"         element={<PostProduct />} />
+            <Route path="/dashboard"            element={<Dashboard />} />
+            <Route path="/edit-product/:id"     element={<EditProduct />} />
+            <Route path="/search"               element={<SearchResults />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>

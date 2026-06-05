@@ -6,7 +6,7 @@ import SharedFooter from '../components/SharedFooter'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useProducts } from '../hooks/useProducts'
-import './Newarrivals.css'
+import './NewArrivals.css'
 
 function formatPrice(n: number) {
   return '$ ' + n.toLocaleString('es-CO') + ' COP'
@@ -59,7 +59,7 @@ export default function NewArrivals() {
         {!loading && newArrivals.length > 0 && (
           <div className="newarrivals-grid">
             {newArrivals.map(item => (
-              <div key={item.id} className="newarrivals-card">
+              <div key={item.id} className="newarrivals-card" onClick={() => navigate(`/product/${item.id}`)} style={{ cursor: 'pointer' }}>
                 {item.isNew && <div className="newarrivals-badge">NEW</div>}
                 <div className="newarrivals-card-img">
                   {item.img

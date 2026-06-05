@@ -6,7 +6,7 @@ import SharedFooter from '../components/SharedFooter'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useProductsByCategory } from '../hooks/useProducts'
-import './Categorypage.css'
+import './CategoryPage.css'
 
 // ── Metadata de categorías ─────────────────────────────
 const categoryMeta: Record<string, { title: string; description: string }> = {
@@ -84,7 +84,7 @@ export default function CategoryPage() {
         {!loading && products.length > 0 && (
           <div className="catpage-grid">
             {products.map(item => (
-              <div key={item.id} className="catpage-card">
+              <div key={item.id} className="catpage-card" onClick={() => navigate(`/product/${item.id}`)} style={{ cursor: 'pointer' }}>
                 <div className="catpage-card-img">
                   {item.images?.[0]
                     ? <img src={item.images[0]} alt={item.name} />

@@ -67,7 +67,7 @@ export default function Offers() {
         {!loading && offers.length > 0 && (
           <div className="offers-grid">
             {offers.map(item => (
-              <div key={item.id} className="offer-card">
+              <div key={item.id} className="offer-card" onClick={() => navigate(`/product/${item.id}`)} style={{ cursor: 'pointer' }}>
                 <div className="offer-badge">SAVE {item.discount}%</div>
                 <div className="offer-card-img">
                   {item.img

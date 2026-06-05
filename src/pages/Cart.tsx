@@ -5,7 +5,7 @@ import SharedFooter from '../components/SharedFooter'
 import Navbar from '../components/Navbar'
 import imgPayments  from '../assets/Payment Options.png'
 
-const TAX = 500
+const TAX = 0.19
 
 function formatPrice(n: number) {
   return '$ ' + n.toLocaleString('es-CO') + ' COP'
@@ -16,7 +16,8 @@ export default function Cart() {
   const navigate  = useNavigate()
   const { items, removeItem, changeQty, total: subtotal } = useCart()
 
-  const total = subtotal + TAX
+  const tax   = Math.round(subtotal * TAX)
+  const total = subtotal + tax
 
   return (
     <div style={{ minHeight: '100vh', background: '#fff', fontFamily: 'Poppins, sans-serif' }}>
@@ -115,8 +116,8 @@ export default function Cart() {
             <span>{formatPrice(subtotal)}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13.5px', color: '#333' }}>
-            <span>Taxes</span>
-            <span>{formatPrice(TAX)}</span>
+            <span>Taxes (19%)</span>
+            <span>{formatPrice(tax)}</span>
           </div>
           <div style={{ height: '1px', background: '#ddd' }} />
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', fontWeight: 700, color: '#1a1a1a' }}>
