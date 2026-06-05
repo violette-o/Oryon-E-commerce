@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { ShoppingCart, User, Search, Menu, LogOut } from 'lucide-react'
+import { ShoppingCart, User, Search, Menu, LogOut, LayoutDashboard } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import logoNegro from '../assets/Logo oryon negro.png'
@@ -11,6 +11,7 @@ const Navbar = () => {
   const [sidebarOpen,  setSidebarOpen]  = useState(false)
   const [hoveredItem,  setHoveredItem]  = useState<string | null>(null)
   const [showDropdown, setShowDropdown] = useState(false)
+  const [searchQuery,  setSearchQuery]  = useState('')
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -34,6 +35,13 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  const handleSearch = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchQuery('')
+    }
+  }
+
   const sections = [
     { title: 'Categories', titleAction: () => { navigate('/categories'); setSidebarOpen(false) }, sub: [
       { label: 'Headphones',   action: () => { navigate('/categories/headphones');   setSidebarOpen(false) } },
@@ -42,16 +50,17 @@ const Navbar = () => {
       { label: 'Smartwatches', action: () => { navigate('/categories/smartwatches'); setSidebarOpen(false) } },
       { label: 'Tablets',      action: () => { navigate('/categories/tablets');      setSidebarOpen(false) } },
     ]},
-    { title: 'Offers', titleAction: () => { navigate('/offers'); setSidebarOpen(false) }, sub: [] },
+    { title: 'Offers',       titleAction: () => { navigate('/offers');       setSidebarOpen(false) }, sub: [] },
     { title: 'New Arrivals', titleAction: () => { navigate('/new-arrivals'); setSidebarOpen(false) }, sub: [] },
-    { title: 'Wishlist',     titleAction: () => { navigate('/wishlist'); setSidebarOpen(false) }, sub: [] },
-    { title: 'Cart', titleAction: () => { navigate('/cart'); window.scrollTo(0, 0); setSidebarOpen(false) }, sub: [] },
-    { title: 'My Account',   titleAction: null, sub: isLoggedIn ? [
-      { label: 'My Profile',         action: () => { navigate('/profile'); setSidebarOpen(false) } },
+    { title: 'Wishlist',     titleAction: () => { navigate('/wishlist');     setSidebarOpen(false) }, sub: [] },
+    { title: 'Cart',         titleAction: () => { navigate('/cart'); window.scrollTo(0, 0); setSidebarOpen(false) }, sub: [] },
+    { title: 'My Account', titleAction: null, sub: isLoggedIn ? [
+      { label: 'My Profile', action: () => { navigate('/profile');    setSidebarOpen(false) } },
+      { label: 'Dashboard',  action: () => { navigate('/dashboard');  setSidebarOpen(false) } },
+      { label: 'My Orders',  action: () => { navigate('/orders');     setSidebarOpen(false) } },
     ] : [
       { label: 'Sign In / Register', action: () => { navigate('/login'); setSidebarOpen(false) } },
     ]},
-    { title: 'My Orders', titleAction: () => { navigate('/orders'); setSidebarOpen(false) }, sub: [] },
     { title: 'Help / Support', titleAction: () => { navigate('/help'); setSidebarOpen(false) }, sub: [
       { label: 'Contact',            action: () => { navigate('/help'); setSidebarOpen(false) } },
       { label: 'FAQ',                action: () => { navigate('/help'); setSidebarOpen(false) } },
@@ -59,24 +68,20 @@ const Navbar = () => {
     ]},
   ]
 
-  const initials = user?.name
-    ? user.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
+  const initials = user?.displayName
+    ? user.displayName.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
     : '?'
 
   return (
     <>
-      {/* ── Overlay ────────────────────────────────── */}
+      {/* ── Overlay ── */}
       {sidebarOpen && (
-        <div
-          onClick={() => setSidebarOpen(false)}
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)', zIndex: 200 }}
-        />
+        <div onClick={() => setSidebarOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)', zIndex: 200 }} />
       )}
 
-      {/* ── Sidebar ────────────────────────────────── */}
+      {/* ── Sidebar ── */}
       <aside style={{
-        position: 'fixed', top: 0, left: 0,
-        width: '300px', height: '100%',
+        position: 'fixed', top: 0, left: 0, width: '300px', height: '100%',
         background: '#fff', zIndex: 201,
         transform: sidebarOpen ? 'translateX(0)' : 'translateX(-300px)',
         transition: 'transform 0.32s cubic-bezier(0.4,0,0.2,1)',
@@ -88,7 +93,6 @@ const Navbar = () => {
             <Menu size={24} color="#1a1a1a" />
           </button>
         </div>
-
         <div style={{ padding: '8px 28px 40px', display: 'flex', flexDirection: 'column' }}>
           {sections.map((section) => (
             <div key={section.title} style={{ marginTop: '20px' }}>
@@ -116,8 +120,7 @@ const Navbar = () => {
                   style={{
                     display: 'block', fontSize: '13.5px', fontWeight: 400,
                     color: hoveredItem === item.label ? '#0abfb8' : '#444',
-                    padding: '7px 0', transition: 'color 0.2s',
-                    cursor: 'pointer',
+                    padding: '7px 0', transition: 'color 0.2s', cursor: 'pointer',
                   }}
                 >
                   {item.label}
@@ -128,7 +131,7 @@ const Navbar = () => {
         </div>
       </aside>
 
-      {/* ── Navbar ─────────────────────────────────── */}
+      {/* ── Navbar ── */}
       <nav style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '16px 48px', borderBottom: '1px solid #e5e5e5',
@@ -147,13 +150,15 @@ const Navbar = () => {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '8px',
-            padding: '6px 14px', borderRadius: '20px', border: '1px solid #ccc',
-          }}>
+          {/* Search */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', border: '1px solid #ccc' }}>
             <Search size={14} color="#999" />
             <input
-              type="text" placeholder="Search"
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearch}
               style={{
                 border: 'none', outline: 'none', fontSize: '13px',
                 fontFamily: 'Poppins, sans-serif', width: '120px',
@@ -162,15 +167,13 @@ const Navbar = () => {
             />
           </div>
 
+          {/* Cart */}
           <ShoppingCart
-          size={22} color="#333"
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            if (isLoggedIn) { navigate('/cart'); window.scrollTo(0, 0) }
-              else navigate('/login')
-              }}
-            />
+            size={22} color="#333" style={{ cursor: 'pointer' }}
+            onClick={() => { if (isLoggedIn) { navigate('/cart'); window.scrollTo(0, 0) } else navigate('/login') }}
+          />
 
+          {/* User */}
           {isLoggedIn ? (
             <div ref={dropdownRef} style={{ position: 'relative' }}>
               <div
@@ -179,8 +182,7 @@ const Navbar = () => {
                   width: '36px', height: '36px', borderRadius: '50%',
                   background: '#0abfb8', display: 'flex', alignItems: 'center',
                   justifyContent: 'center', cursor: 'pointer',
-                  color: '#fff', fontSize: '13px', fontWeight: 700,
-                  userSelect: 'none',
+                  color: '#fff', fontSize: '13px', fontWeight: 700, userSelect: 'none',
                 }}
               >
                 {initials}
@@ -191,21 +193,23 @@ const Navbar = () => {
                   position: 'absolute', top: '44px', right: 0,
                   background: '#fff', borderRadius: '12px',
                   boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-                  border: '1px solid #e0e0e0',
-                  minWidth: '180px', padding: '8px 0', zIndex: 200,
+                  border: '1px solid #e0e0e0', minWidth: '180px', padding: '8px 0', zIndex: 200,
                 }}>
                   <div style={{ padding: '10px 16px', borderBottom: '1px solid #f0f0f0' }}>
-                    <p style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: 0 }}>{user?.name}</p>
+                    <p style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: 0 }}>{user?.displayName}</p>
                     <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>{user?.email}</p>
                   </div>
-                  <a href="#" onClick={() => { navigate('/profile'); setShowDropdown(false) }} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
+                  <a href="#" onClick={() => { navigate('/profile');   setShowDropdown(false) }} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
                     <User size={14} /> My Profile
                   </a>
-                  <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
+                  <a href="#" onClick={() => { navigate('/dashboard'); setShowDropdown(false) }} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
+                    <LayoutDashboard size={14} /> Dashboard
+                  </a>
+                  <a href="#" onClick={() => { navigate('/orders');    setShowDropdown(false) }} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', fontSize: '13px', color: '#555', textDecoration: 'none' }}>
                     <ShoppingCart size={14} /> My Orders
                   </a>
                   <button
-                    onClick={() => { logout(); setShowDropdown(false) }}
+                    onClick={async () => { await logout(); setShowDropdown(false) }}
                     style={{
                       display: 'flex', alignItems: 'center', gap: '10px',
                       padding: '10px 16px', fontSize: '13px', color: '#ff4444',
@@ -220,11 +224,7 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <User
-              size={22} color="#333"
-              style={{ cursor: 'pointer' }}
-              onClick={() => navigate('/login')}
-            />
+            <User size={22} color="#333" style={{ cursor: 'pointer' }} onClick={() => navigate('/login')} />
           )}
         </div>
       </nav>

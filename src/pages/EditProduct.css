@@ -1,15 +1,15 @@
 /* ─────────────────────────────────────────────
-   ORYON – Post Product Page | PostProduct.css
+   ORYON – Edit Product Page | EditProduct.css
 ───────────────────────────────────────────── */
 
-.postproduct-page {
+.editproduct-page {
   min-height: 100vh;
   background: #fff;
   font-family: 'Poppins', sans-serif;
 }
 
 /* ── Toast ── */
-.postproduct-toast {
+.editproduct-toast {
   position: fixed;
   top: 80px;
   right: 24px;
@@ -23,67 +23,75 @@
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
+/* ── Loading ── */
+.editproduct-loading {
+  text-align: center;
+  padding: 80px 0;
+  color: #888;
+  font-size: 14px;
+}
+
 /* ── Header ── */
-.postproduct-header {
+.editproduct-header {
   text-align: center;
   padding: 48px 0 32px;
   border-bottom: 1px solid #f0f0f0;
 }
 
-.postproduct-header h1 {
+.editproduct-header h1 {
   font-size: 28px;
   font-weight: 700;
   color: #1a1a1a;
   margin: 0 0 8px;
 }
 
-.postproduct-header p {
+.editproduct-header p {
   font-size: 14px;
   color: #888;
   margin: 0;
 }
 
 /* ── Section ── */
-.postproduct-section {
+.editproduct-section {
   max-width: 680px;
   margin: 0 auto;
   padding: 48px 80px 80px;
 }
 
 /* ── Form ── */
-.postproduct-form {
+.editproduct-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 /* ── Field ── */
-.postproduct-field {
+.editproduct-field {
   display: flex;
   flex-direction: column;
   gap: 7px;
   flex: 1;
 }
 
-.postproduct-field label {
+.editproduct-field label {
   font-size: 12px;
   font-weight: 700;
   color: #555;
   letter-spacing: 0.4px;
 }
 
-.postproduct-field label span {
+.editproduct-field label span {
   color: #e63946;
 }
 
-.postproduct-field label .optional {
+.editproduct-field label .optional {
   color: #aaa;
   font-weight: 400;
 }
 
-.postproduct-field input,
-.postproduct-field textarea,
-.postproduct-field select {
+.editproduct-field input,
+.editproduct-field textarea,
+.editproduct-field select {
   border: 1.5px solid #e0e0e0;
   border-radius: 10px;
   padding: 11px 14px;
@@ -96,25 +104,25 @@
   background: #fff;
 }
 
-.postproduct-field input:focus,
-.postproduct-field textarea:focus,
-.postproduct-field select:focus {
+.editproduct-field input:focus,
+.editproduct-field textarea:focus,
+.editproduct-field select:focus {
   border-color: #0abfb8;
 }
 
-.postproduct-field input::placeholder,
-.postproduct-field textarea::placeholder {
+.editproduct-field input::placeholder,
+.editproduct-field textarea::placeholder {
   color: #bbb;
 }
 
 /* ── Row ── */
-.postproduct-row {
+.editproduct-row {
   display: flex;
   gap: 16px;
 }
 
 /* ── Condition buttons ── */
-.postproduct-condition {
+.editproduct-condition {
   display: flex;
   gap: 10px;
 }
@@ -146,7 +154,7 @@
 }
 
 /* ── Image preview ── */
-.postproduct-preview {
+.editproduct-preview {
   width: 120px;
   height: 120px;
   border-radius: 12px;
@@ -155,28 +163,28 @@
   margin-top: 4px;
 }
 
-.postproduct-preview img {
+.editproduct-preview img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
 /* ── Error ── */
-.postproduct-error {
+.editproduct-error {
   font-size: 12.5px;
   color: #e63946;
   margin: 0;
 }
 
 /* ── Actions ── */
-.postproduct-actions {
+.editproduct-actions {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
   margin-top: 8px;
 }
 
-.postproduct-cancel {
+.editproduct-cancel {
   background: #fff;
   color: #555;
   border: 1.5px solid #e0e0e0;
@@ -189,12 +197,12 @@
   transition: border-color 0.2s, color 0.2s;
 }
 
-.postproduct-cancel:hover {
+.editproduct-cancel:hover {
   border-color: #aaa;
   color: #1a1a1a;
 }
 
-.postproduct-submit {
+.editproduct-submit {
   background: #0abfb8;
   color: #fff;
   border: none;
@@ -207,28 +215,28 @@
   transition: background 0.2s, opacity 0.2s;
 }
 
-.postproduct-submit:hover:not(:disabled) {
+.editproduct-submit:hover:not(:disabled) {
   background: #089990;
 }
 
-.postproduct-submit:disabled {
+.editproduct-submit:disabled {
   opacity: 0.6;
   cursor: default;
 }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .postproduct-section {
+  .editproduct-section {
     padding: 32px 24px 60px;
   }
 
-  .postproduct-row {
+  .editproduct-row {
     flex-direction: column;
   }
 }
 
 /* ── Upload area ── */
-.postproduct-upload-area {
+.editproduct-upload-area {
   border: 2px dashed #e0e0e0;
   border-radius: 12px;
   padding: 32px;
@@ -241,35 +249,35 @@
   text-align: center;
 }
 
-.postproduct-upload-area:hover {
+.editproduct-upload-area:hover {
   border-color: #0abfb8;
   background: #f0fdfb;
 }
 
-.postproduct-upload-area p {
+.editproduct-upload-area p {
   font-size: 13.5px;
   font-weight: 600;
   color: #555;
   margin: 0;
 }
 
-.postproduct-upload-area span {
+.editproduct-upload-area span {
   font-size: 12px;
   color: #aaa;
 }
 
-.postproduct-upload-icon {
+.editproduct-upload-icon {
   color: #0abfb8;
 }
 
 /* ── Preview wrap ── */
-.postproduct-preview-wrap {
+.editproduct-preview-wrap {
   position: relative;
   width: 160px;
   height: 160px;
 }
 
-.postproduct-preview-img {
+.editproduct-preview-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -277,7 +285,7 @@
   border: 1.5px solid #e0e0e0;
 }
 
-.postproduct-remove-img {
+.editproduct-remove-img {
   position: absolute;
   top: -8px;
   right: -8px;
@@ -294,6 +302,6 @@
   transition: background 0.2s;
 }
 
-.postproduct-remove-img:hover {
+.editproduct-remove-img:hover {
   background: #c0392b;
 }

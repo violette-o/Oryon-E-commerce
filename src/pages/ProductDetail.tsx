@@ -2,12 +2,17 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Star, Eye, ShoppingBag, ChevronLeft, ChevronRight, Heart
 } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getProductById } from '../services/products'
+import type { Product } from '../services/products'
 import Navbar from '../components/Navbar'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import './ProductDetail.css'
 import SharedFooter from '../components/SharedFooter'
+import CommentSection from '../components/CommentSection'
+import RatingSection from '../components/RatingSection'
+
 
 import imgAirpodsMaxBlack from '../assets/airpodsmaxblack.webp'
 import imgAirpodsMaxGreen from '../assets/airpodsmaxgreen.png'
@@ -144,6 +149,10 @@ function Carousel({ items, onAdded }: { items: CardData[]; onAdded: (name: strin
 
 // ══════════════════════════════════════════════════════
 export default function ProductDetail() {
+  const { id } = useParams()
+
+const [product, setProduct] = useState<Product | null>(null)
+const [loadingProduct, setLoadingProduct] = useState(true)
   const { isLoggedIn } = useAuth()
   const { addItem }    = useCart()
   const navigate       = useNavigate()
@@ -153,20 +162,32 @@ export default function ProductDetail() {
   const [time,  setTime]  = useState({ h: 0, m: 5, s: 59, ms: 47 })
   const [added, setAdded] = useState<string | null>(null)
 
-  const totalMsRef = useRef((5 * 60 + 59) * 1000 + 470)
-  useEffect(() => {
-    const id = setInterval(() => {
-      totalMsRef.current = Math.max(0, totalMsRef.current - 50)
-      const t = totalMsRef.current
-      setTime({
-        h:  Math.floor(t / 3600000),
-        m:  Math.floor((t % 3600000) / 60000),
-        s:  Math.floor((t % 60000)   / 1000),
-        ms: Math.floor((t % 1000)    / 10),
-      })
-    }, 50)
-    return () => clearInterval(id)
-  }, [])
+const totalMsRef = useRef((5 * 60 + 59) * 1000 + 470)
+
+useEffect(() => {
+  if (!id) return
+
+  getProductById(id)
+    .then(setProduct)
+    .finally(() => setLoadingProduct(false))
+}, [id])
+
+useEffect(() => {
+  const timerId = setInterval(() => {
+    totalMsRef.current = Math.max(0, totalMsRef.current - 50)
+
+    const t = totalMsRef.current
+
+    setTime({
+      h: Math.floor(t / 3600000),
+      m: Math.floor((t % 3600000) / 60000),
+      s: Math.floor((t % 60000) / 1000),
+      ms: Math.floor((t % 1000) / 10),
+    })
+  }, 50)
+
+  return () => clearInterval(timerId)
+}, [])
 
   const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -174,7 +195,13 @@ export default function ProductDetail() {
     setAdded(name)
     setTimeout(() => setAdded(null), 2000)
   }
+if (loadingProduct) {
+  return <div>Loading product...</div>
+}
 
+if (!product) {
+  return <div>Product not found</div>
+}
   const handleAddToCart = () => {
     if (!isLoggedIn) { navigate('/login'); return }
     addItem({ id: 1, name: 'Headphones Samsung', price: 2077000, img: imgProductoMain })
@@ -319,6 +346,16 @@ export default function ProductDetail() {
           <input type="email" placeholder="Email" />
           <button className="btn-send">Send</button>
         </div>
+      </section>
+
+      {/* ══ COMENTARIOS ══ */}
+      <section className="pd-comments">
+        <CommentSection productId="samsung-headphones-1" />
+      </section>
+
+      {/* ══ RATINGS ══ */}
+      <section className="pd-ratings">
+        <RatingSection productId="samsung-headphones-1" />
       </section>
 
       <SharedFooter />

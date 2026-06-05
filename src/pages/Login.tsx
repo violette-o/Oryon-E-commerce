@@ -5,7 +5,6 @@ import { User, Mail, Lock } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import logoClaro from '../assets/Logo Oryon claro.png'
 
-// ── Constelación SVG de fondo ──────────────────────────
 function Constellation() {
   return (
     <svg
@@ -14,7 +13,6 @@ function Constellation() {
       preserveAspectRatio="xMidYMid slice"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Líneas izquierda */}
       <line x1="80"  y1="120" x2="200" y2="80"  stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
       <line x1="200" y1="80"  x2="340" y2="160" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
       <line x1="340" y1="160" x2="260" y2="300" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
@@ -28,8 +26,6 @@ function Constellation() {
       ].map(([cx,cy], i) => (
         <circle key={`l${i}`} cx={cx} cy={cy} r="3" fill="rgba(255,255,255,0.5)" />
       ))}
-
-      {/* Líneas derecha */}
       <line x1="1100" y1="80"  x2="1260" y2="140" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
       <line x1="1260" y1="140" x2="1380" y2="100" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
       <line x1="1380" y1="100" x2="1360" y2="240" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
@@ -42,36 +38,23 @@ function Constellation() {
       ].map(([cx,cy], i) => (
         <circle key={`r${i}`} cx={cx} cy={cy} r="3" fill="rgba(255,255,255,0.5)" />
       ))}
-
-      {/* Puntos dispersos */}
-      {[
-        [420,60],[500,200],[160,640],[320,700],[1050,600],[1200,680],[900,720],[600,740]
-      ].map(([cx,cy], i) => (
+      {[[420,60],[500,200],[160,640],[320,700],[1050,600],[1200,680],[900,720],[600,740]].map(([cx,cy],i) => (
         <circle key={`s${i}`} cx={cx} cy={cy} r="2" fill="rgba(255,255,255,0.3)" />
       ))}
     </svg>
   )
 }
 
-// ── Input con ícono ────────────────────────────────────
-function IconInput({
-  icon, type = 'text', placeholder, value, onChange, required = false
-}: {
-  icon: React.ReactNode
-  type?: string
-  placeholder: string
-  value: string
-  onChange: (v: string) => void
-  required?: boolean
+function IconInput({ icon, type = 'text', placeholder, value, onChange, required = false }: {
+  icon: React.ReactNode; type?: string; placeholder: string
+  value: string; onChange: (v: string) => void; required?: boolean
 }) {
   const [focused, setFocused] = useState(false)
   return (
     <div className={`login-input-wrapper ${focused ? 'login-input-wrapper--focused' : ''}`}>
       <span className="login-input-icon">{icon}</span>
       <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
+        type={type} placeholder={placeholder} value={value}
         onChange={e => onChange(e.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -82,26 +65,55 @@ function IconInput({
   )
 }
 
-// ── Componente principal ────────────────────────────────
+function parseFirebaseError(code: string): string {
+  switch (code) {
+    case 'auth/invalid-email':        return 'Invalid email address.'
+    case 'auth/user-not-found':       return 'No account found with this email.'
+    case 'auth/wrong-password':       return 'Incorrect password.'
+    case 'auth/email-already-in-use': return 'This email is already registered.'
+    case 'auth/weak-password':        return 'Password must be at least 6 characters.'
+    case 'auth/too-many-requests':    return 'Too many attempts. Please try again later.'
+    case 'auth/invalid-credential':   return 'Invalid email or password.'
+    default:                          return 'Something went wrong. Please try again.'
+  }
+}
+
 export default function Login() {
-  const { login, register } = useAuth()
+  const { login, register, resetPassword } = useAuth()
   const navigate = useNavigate()
 
-  const [mode,     setMode]    = useState<'login' | 'register'>('login')
-  const [name,     setName]    = useState('')
-  const [email,    setEmail]   = useState('')
-  const [password, setPass]    = useState('')
-  const [confirm,  setConfirm] = useState('')
-  const [error,    setError]   = useState('')
-  const [loading,  setLoading] = useState(false)
+  const [mode,        setMode]       = useState<'login' | 'register' | 'forgot'>('login')
+  const [name,        setName]       = useState('')
+  const [email,       setEmail]      = useState('')
+  const [password,    setPass]       = useState('')
+  const [confirm,     setConfirm]    = useState('')
+  const [error,       setError]      = useState('')
+  const [message,     setMessage]    = useState('')
+  const [loading,     setLoading]    = useState(false)
 
-  const switchMode = (m: 'login' | 'register') => {
-    setMode(m); setError(''); setName(''); setEmail(''); setPass(''); setConfirm('')
+  const switchMode = (m: typeof mode) => {
+    setMode(m); setError(''); setMessage('')
+    setName(''); setEmail(''); setPass(''); setConfirm('')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
+    setError(''); setMessage('')
+
+    if (mode === 'forgot') {
+      if (!email) { setError('Please enter your email.'); return }
+      setLoading(true)
+      try {
+        await resetPassword(email)
+        setMessage('Password reset email sent! Check your inbox.')
+      } catch (err: unknown) {
+        const code = (err as { code?: string }).code ?? ''
+        setError(parseFirebaseError(code))
+      } finally {
+        setLoading(false)
+      }
+      return
+    }
 
     if (mode === 'register') {
       if (!name.trim())         { setError('Please enter your name.');                   return }
@@ -110,15 +122,25 @@ export default function Login() {
     }
 
     setLoading(true)
-    let ok = false
-    if (mode === 'login') {
-      ok = await login(email, password)
-      if (!ok) setError('Email or password incorrect.')
-    } else {
-      ok = await register(name, email, password)
+    try {
+      if (mode === 'login') { await login(email, password) }
+      else                  { await register(name, email, password) }
+      navigate('/')
+    } catch (err: unknown) {
+      const code = (err as { code?: string }).code ?? ''
+      setError(parseFirebaseError(code))
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
-    if (ok) navigate('/')
+  }
+
+  const cardStyle = {
+    width: '100%', maxWidth: '640px',
+    background: '#4a4a4a', borderRadius: '28px',
+    border: '1.5px solid rgba(142,207,201,0.5)',
+    padding: '40px 60px 36px',
+    boxShadow: '0 0 40px rgba(10,191,184,0.1)',
+    zIndex: 2, position: 'relative' as const,
   }
 
   return (
@@ -135,7 +157,7 @@ export default function Login() {
       </div>
 
       {/* Card */}
-      <div className="login-card">
+      <div className="login-card" style={cardStyle}>
         <h2 className="login-card-title">
           {mode === 'login' ? 'Welcome back!' : 'Sign up to get started'}
         </h2>
@@ -180,6 +202,7 @@ export default function Login() {
           )}
 
           {error && <p className="login-error">{error}</p>}
+          {message && <p className="login-message">{message}</p>}
 
           <button
             type="submit"

@@ -1,15 +1,15 @@
 /* ─────────────────────────────────────────────
-   ORYON – New Arrivals Page | NewArrivals.css
+   ORYON – Category Page | CategoryPage.css
 ───────────────────────────────────────────── */
 
-.newarrivals-page {
+.catpage {
   min-height: 100vh;
   background: #fff;
   font-family: 'Poppins', sans-serif;
 }
 
 /* ── Toast ── */
-.newarrivals-toast {
+.catpage-toast {
   position: fixed;
   top: 80px;
   right: 24px;
@@ -24,73 +24,69 @@
 }
 
 /* ── Header ── */
-.newarrivals-header {
+.catpage-header {
   text-align: center;
-  padding: 48px 0 32px;
+  padding: 40px 48px 32px;
   border-bottom: 1px solid #f0f0f0;
 }
 
-.newarrivals-header h1 {
-  font-size: 28px;
+.catpage-back {
+  display: inline-block;
+  font-size: 13px;
+  color: #0abfb8;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: opacity 0.2s;
+}
+
+.catpage-back:hover {
+  opacity: 0.75;
+}
+
+.catpage-header h1 {
+  font-size: 26px;
   font-weight: 700;
   color: #1a1a1a;
   margin: 0 0 8px;
 }
 
-.newarrivals-header p {
+.catpage-header p {
   font-size: 14px;
   color: #888;
   margin: 0;
 }
 
 /* ── Section ── */
-.newarrivals-section {
+.catpage-section {
   max-width: 1100px;
   margin: 0 auto;
   padding: 48px 80px 80px;
 }
 
 /* ── Grid ── */
-.newarrivals-grid {
+.catpage-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
 /* ── Card ── */
-.newarrivals-card {
+.catpage-card {
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 16px;
   overflow: hidden;
-  position: relative;
   transition: box-shadow 0.22s, transform 0.22s;
 }
 
-.newarrivals-card:hover {
+.catpage-card:hover {
   box-shadow: 0 8px 28px rgba(0,0,0,0.10);
   transform: translateY(-2px);
 }
 
-/* ── Badge ── */
-.newarrivals-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #0abfb8;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  z-index: 1;
-  letter-spacing: 0.5px;
-}
-
-/* ── Image ── */
-.newarrivals-card-img {
+.catpage-card-img {
   background: #f5f5f5;
-  height: 200px;
+  height: 240px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,19 +94,18 @@
   overflow: hidden;
 }
 
-.newarrivals-card-img img {
+.catpage-card-img img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
 
-.newarrivals-card:hover .newarrivals-card-img img {
+.catpage-card:hover .catpage-card-img img {
   transform: scale(1.05);
 }
 
-/* ── Body ── */
-.newarrivals-card-body {
+.catpage-card-body {
   padding: 14px 16px 16px;
   text-align: center;
   display: flex;
@@ -119,22 +114,21 @@
   gap: 4px;
 }
 
-.newarrivals-card-name {
+.catpage-card-name {
   font-size: 13px;
   font-weight: 600;
   color: #1a1a1a;
   margin: 0;
 }
 
-.newarrivals-card-price {
+.catpage-card-price {
   font-size: 13px;
   color: #555;
   font-weight: 500;
-  margin: 0 0 8px;
+  margin: 0 0 10px;
 }
 
-/* ── Cart button ── */
-.newarrivals-btn-cart {
+.catpage-btn-cart {
   background: #0abfb8;
   color: #fff;
   border: none;
@@ -148,34 +142,61 @@
   transition: background 0.2s;
 }
 
-.newarrivals-btn-cart:hover {
+.catpage-btn-cart:hover {
   background: #089990;
 }
 
-/* ── Responsive ── */
-@media (max-width: 1024px) {
-  .newarrivals-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+/* ── Not found ── */
+.catpage-notfound {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  gap: 16px;
+  color: #555;
 }
 
+/* ── Responsive ── */
 @media (max-width: 900px) {
-  .newarrivals-section {
+  .catpage-section {
     padding: 32px 24px 60px;
   }
 
-  .newarrivals-grid {
+  .catpage-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
 }
 
-@media (max-width: 500px) {
-  .newarrivals-grid {
+@media (max-width: 600px) {
+  .catpage-grid {
     grid-template-columns: 1fr;
   }
 
-  .newarrivals-header h1 {
+  .catpage-header {
+    padding: 32px 24px 24px;
+  }
+
+  .catpage-header h1 {
     font-size: 22px;
   }
+}
+
+/* ── Messages ── */
+.catpage-msg {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  padding: 60px 0;
+}
+
+.catpage-msg--error {
+  color: #e63946;
+}
+
+.catpage-card-noimg {
+  font-size: 12px;
+  color: #bbb;
 }

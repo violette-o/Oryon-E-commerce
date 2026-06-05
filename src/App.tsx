@@ -9,11 +9,15 @@ import Wishlist      from './pages/Wishlist'
 import Cart          from './pages/Cart'
 import Checkout      from './pages/Checkout'
 import Categories    from './pages/Categories'
-import CategoryPage  from './pages/Categorypage'
 import Offers        from './pages/Offers'
-import NewArrivals   from './pages/Newarrivals'
-import MyOrders      from './pages/Myorders'
-import HelpSupport   from './pages/Helpsupport'
+import PostProduct   from './pages/PostProduct'
+import Dashboard     from './pages/Dashboard'
+import EditProduct   from './pages/EditProduct'
+import SearchResults from './pages/SearchResults'
+import CategoryPage  from './pages/CategoryPage'
+import NewArrivals   from './pages/NewArrivals'
+import MyOrders      from './pages/MyOrders'
+import HelpSupport   from './pages/HelpSupport'
 
 function App() {
   return (
@@ -22,7 +26,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/"         element={<Home />} />
-            <Route path="/product"  element={<ProductDetail />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/login"    element={<Login />} />
             <Route path="/profile"  element={<Profile />} />
             <Route path="/wishlist" element={<Wishlist />} />
@@ -34,6 +38,10 @@ function App() {
             <Route path="/new-arrivals" element={<NewArrivals />} />
             <Route path="/orders"   element={<MyOrders />} />
             <Route path="/help"     element={<HelpSupport />} />
+            <Route path="/post-product" element={<PostProduct />} />
+            <Route path="/dashboard"    element={<Dashboard />} />
+            <Route path="/edit-product/:id" element={<EditProduct />} />
+            <Route path="/search" element={<SearchResults />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>
